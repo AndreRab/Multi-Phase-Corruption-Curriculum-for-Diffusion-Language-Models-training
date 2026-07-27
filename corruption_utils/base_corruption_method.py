@@ -16,3 +16,7 @@ class CorruptionMethod(ABC):
         timesteps: torch.Tensor,
     ) -> CorruptionOutput:
         pass
+    
+    def set_epoch(self, epoch: int) -> None:
+        pass
+    

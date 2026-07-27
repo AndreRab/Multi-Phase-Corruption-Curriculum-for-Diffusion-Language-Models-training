@@ -12,6 +12,7 @@ class GPT2DiffusionTransformer(nn.Module):
         model_name: str = "openai-community/gpt2",
         num_diffusion_steps: int = 1000,
         vocabulary_size: int | None = None,
+        bidirectional_attention: bool = True,
     ) -> None:
         super().__init__()
 
@@ -35,6 +36,16 @@ class GPT2DiffusionTransformer(nn.Module):
         )
 
         self.num_diffusion_steps = num_diffusion_steps
+        self.bidirectional_attention = bidirectional_attention
+
+        if self.bidirectional_attention:
+            self._make_attention_bidirectional()
+
+    def _make_attention_bidirectional(self) -> None:
+        for block in self.transformer.h:
+            attention_bias = getattr(block.attn, "bias", None)
+            if attention_bias is not None:
+                attention_bias.data.fill_(True)
 
     def forward(
         self,
@@ -226,11 +237,13 @@ class GPT2DiffusionTransformer(nn.Module):
         num_diffusion_steps: int = 1000,
         vocabulary_size: int | None = None,
         device: torch.device | str = "cpu",
+        bidirectional_attention: bool = True,
     ) -> "GPT2DiffusionTransformer" | None:
         model = cls(
             model_name=model_name,
             num_diffusion_steps=num_diffusion_steps,
             vocabulary_size=vocabulary_size,
+            bidirectional_attention=bidirectional_attention,
         )
         
         file_path = Path(file_path)

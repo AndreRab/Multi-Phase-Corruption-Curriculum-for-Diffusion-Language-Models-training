@@ -6,8 +6,7 @@
   "learning_rate": 0.00001,
   "result_folder": "results",
   "model_id": "v1",
-  "model_diffusion_steps": 1000,
-  "corruption_diffusion_steps": 100,
+  "num_diffusion_steps": 100,
   "max_length": 64,
   "batch_size": 95
 }

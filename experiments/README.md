@@ -35,7 +35,6 @@ Supported JSON keys:
 - `model_id`
 - `training_output_save_path`
 - `train_output_id`
-- `model_diffusion_steps`
-- `corruption_diffusion_steps`
+- `num_diffusion_steps`
 - `max_length`
 - `batch_size`

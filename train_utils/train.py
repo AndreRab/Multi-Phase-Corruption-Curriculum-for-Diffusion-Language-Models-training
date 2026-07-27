@@ -30,6 +30,10 @@ def train(
     test_acc = []
 
     for epoch in range(num_epochs):
+        corruption_method = getattr(train_loader.collate_fn, "corruption_method", None)    
+        corruption_method.set_epoch(epoch)
+
+        model.train()
         total_loss_train = 0.0
         total_loss_test = 0.0
 
@@ -100,6 +104,9 @@ def train(
             )
 
         if test_loader:
+            was_training = model.training
+            model.eval()
+
             for batch in tqdm(
                 test_loader,
                 desc=f"Testing {epoch + 1}/{num_epochs}",
@@ -147,6 +154,9 @@ def train(
                     test_acc.append(accuracy)
 
                 total_loss_test += loss.item()
+
+            if was_training:
+                model.train()
 
         average_loss_train = total_loss_train / len(train_loader)
         average_loss_test = total_loss_test / len(test_loader) if test_loader else 0
