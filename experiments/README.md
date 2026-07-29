@@ -9,6 +9,17 @@ python3 main.py --config experiments/example.json --dry-run
 python3 main.py --config experiments/example.json
 ```
 
+Use all visible GPUs with PyTorch DistributedDataParallel:
+
+```bash
+torchrun --nproc_per_node=4 main.py --config experiments/example.json
+```
+
+Set `--nproc_per_node` to the number of GPUs you want to use. Each process
+uses one GPU, and the dataset is sharded across processes.
+`batch_size` is per GPU, so the global batch size is
+`batch_size * nproc_per_node`.
+
 You can also override a single value from the command line:
 
 ```bash

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import torch
+import torch.distributed as dist
 from tqdm import tqdm
 
 from model_wrappers.gpt2_diffusion_transformer_wrapper import GPT2DiffusionTransformer
@@ -13,13 +14,28 @@ class TrainingOutput:
     test_acc: list[float]
     iterations_intervals: dict
 
+
+def _unwrap_model(model: torch.nn.Module) -> torch.nn.Module:
+    return model.module if hasattr(model, "module") else model
+
+
+def _distributed_mean(value: float, device: torch.device) -> float:
+    if not dist.is_available() or not dist.is_initialized():
+        return value
+
+    value_tensor = torch.tensor(value, device=device)
+    dist.all_reduce(value_tensor, op=dist.ReduceOp.AVG)
+    return value_tensor.item()
+
+
 def train(
     device: torch.device, 
     model: GPT2DiffusionTransformer, 
     optimizer: torch.optim.Optimizer, 
     num_epochs: int, 
     train_loader: torch.utils.data.DataLoader, 
-    test_loader: torch.utils.data.DataLoader = None
+    test_loader: torch.utils.data.DataLoader = None,
+    is_main_process: bool = True,
 ) -> TrainingOutput:
     
     model = model.to(device)
@@ -31,7 +47,11 @@ def train(
     test_acc = []
 
     for epoch in range(num_epochs):
-        corruption_method: CorruptionMethod = getattr(train_loader.collate_fn, "corruption_method", None)    
+        train_sampler = getattr(train_loader, "sampler", None)
+        if hasattr(train_sampler, "set_epoch"):
+            train_sampler.set_epoch(epoch)
+
+        corruption_method: CorruptionMethod = getattr(train_loader.collate_fn, "corruption_method", None)
         corruption_method.set_epoch(epoch)
 
         model.train()
@@ -43,6 +63,7 @@ def train(
             desc=f"Epoch {epoch + 1}/{num_epochs}",
             leave=True,
             dynamic_ncols=True,
+            disable=not is_main_process,
         )
 
         for batch in progress_bar:
@@ -70,7 +91,9 @@ def train(
                 attention_mask=batch["attention_mask"],
             )
 
-            loss = model.compute_loss(
+            model_for_metrics = _unwrap_model(model)
+
+            loss = model_for_metrics.compute_loss(
                 logits=logits,
                 clean_ids=batch["clean_ids"],
                 corrupted_positions=batch["corrupted_positions"],
@@ -86,23 +109,27 @@ def train(
 
             optimizer.step()
 
-            accuracy = model.compute_accuracy(
+            accuracy = model_for_metrics.compute_accuracy(
                 logits=logits,
                 clean_ids=batch["clean_ids"],
                 corrupted_positions=batch["corrupted_positions"],
                 attention_mask=batch["attention_mask"],
             )
 
-            train_loss.append(loss.item())
-            train_acc.append(accuracy)
+            reduced_loss = _distributed_mean(loss.item(), device)
+            reduced_accuracy = _distributed_mean(accuracy, device)
 
-            total_loss_train += loss.item()
+            train_loss.append(reduced_loss)
+            train_acc.append(reduced_accuracy)
 
-            progress_bar.set_postfix(
-                loss=f"{loss.item():.4f}",
-                acc=f"{accuracy:.4f}",
-                corruption_method=f"{str(train_loader.collate_fn.corruption_method)}"
-            )
+            total_loss_train += reduced_loss
+
+            if is_main_process:
+                progress_bar.set_postfix(
+                    loss=f"{reduced_loss:.4f}",
+                    acc=f"{reduced_accuracy:.4f}",
+                    corruption_method=f"{str(train_loader.collate_fn.corruption_method)}"
+                )
 
         if test_loader:
             was_training = model.training
@@ -113,6 +140,7 @@ def train(
                 desc=f"Testing {epoch + 1}/{num_epochs}",
                 leave=False,
                 dynamic_ncols=True,
+                disable=not is_main_process,
             ):
                 batch = {
                     key: value.to(device)
@@ -137,24 +165,29 @@ def train(
                         attention_mask=batch["attention_mask"],
                     )
 
-                    loss = model.compute_loss(
+                    model_for_metrics = _unwrap_model(model)
+
+                    loss = model_for_metrics.compute_loss(
                         logits=logits,
                         clean_ids=batch["clean_ids"],
                         corrupted_positions=batch["corrupted_positions"],
                         attention_mask=batch["attention_mask"],
                     )
 
-                    accuracy = model.compute_accuracy(
+                    accuracy = model_for_metrics.compute_accuracy(
                         logits=logits,
                         clean_ids=batch["clean_ids"],
                         corrupted_positions=batch["corrupted_positions"],
                         attention_mask=batch["attention_mask"],
                     )
 
-                    test_loss.append(loss.item())
-                    test_acc.append(accuracy)
+                    reduced_loss = _distributed_mean(loss.item(), device)
+                    reduced_accuracy = _distributed_mean(accuracy, device)
 
-                total_loss_test += loss.item()
+                    test_loss.append(reduced_loss)
+                    test_acc.append(reduced_accuracy)
+
+                total_loss_test += reduced_loss
 
             if was_training:
                 model.train()
@@ -162,14 +195,15 @@ def train(
         average_loss_train = total_loss_train / len(train_loader)
         average_loss_test = total_loss_test / len(test_loader) if test_loader else 0
 
-        print(
-            f"Epoch {epoch + 1}/{num_epochs} | "
-            f"train_loss={average_loss_train:.4f} | "
-            f"test_loss={average_loss_test:.4f} | "
-            f"train_acc={sum(train_acc) / len(train_acc):.4f} | "
-            f"test_acc={sum(test_acc) / len(test_acc):.4f} | "
-            f"corruption_method={str(train_loader.collate_fn.corruption_method)}"
-        )
+        if is_main_process:
+            print(
+                f"Epoch {epoch + 1}/{num_epochs} | "
+                f"train_loss={average_loss_train:.4f} | "
+                f"test_loss={average_loss_test:.4f} | "
+                f"train_acc={sum(train_acc) / len(train_acc):.4f} | "
+                f"test_acc={sum(test_acc) / len(test_acc):.4f} | "
+                f"corruption_method={str(train_loader.collate_fn.corruption_method)}"
+            )
 
     return TrainingOutput(
         train_loss=train_loss,
