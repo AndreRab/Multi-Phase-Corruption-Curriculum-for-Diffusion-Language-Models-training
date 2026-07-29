@@ -3,6 +3,7 @@ import torch
 from tqdm import tqdm
 
 from model_wrappers.gpt2_diffusion_transformer_wrapper import GPT2DiffusionTransformer
+from corruption_utils.base_corruption_method import CorruptionMethod
 
 @dataclass
 class TrainingOutput:
@@ -30,7 +31,7 @@ def train(
     test_acc = []
 
     for epoch in range(num_epochs):
-        corruption_method = getattr(train_loader.collate_fn, "corruption_method", None)    
+        corruption_method: CorruptionMethod = getattr(train_loader.collate_fn, "corruption_method", None)    
         corruption_method.set_epoch(epoch)
 
         model.train()
