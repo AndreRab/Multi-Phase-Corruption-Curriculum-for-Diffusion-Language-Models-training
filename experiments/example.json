@@ -2,7 +2,7 @@
   "model_name": "openai-community/gpt2",
   "dataset_path": "Salesforce/wikitext",
   "dataset_name": "wikitext-2-raw-v1",
-  "iterations_intervals": [5, 2, 2],
+  "iterations_intervals": [10, 10, 10],
   "learning_rate": 0.00001,
   "result_folder": "results",
   "model_id": "v1",
