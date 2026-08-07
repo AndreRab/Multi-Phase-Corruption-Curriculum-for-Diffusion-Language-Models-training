@@ -9,7 +9,7 @@ class SimilarTokenCorruption(CorruptionMethod):
         embedding_weight: torch.Tensor,
         number_of_neighbors: int = 20,
         minimum_probability: float = 0.01,
-        maximum_probability: float = 0.30,
+        maximum_probability: float = 0.95,
         chunk_size: int = 1024,
     ) -> None:
         self.num_diffusion_steps = num_diffusion_steps

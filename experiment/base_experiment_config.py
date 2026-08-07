@@ -35,7 +35,7 @@ class ExperimentConfig:
             self.training_output_save_path = f"{self.result_folder}/training_output"
         if len(self.iterations_intervals) != 3:
             raise ValueError("iterations_intervals must contain one value per corruption method.")
-        if any(interval <= 0 for interval in self.iterations_intervals):
+        if any(interval < 0 for interval in self.iterations_intervals):
             raise ValueError("iterations_intervals values must be positive.")
         if self.num_diffusion_steps <= 1:
             raise ValueError("num_diffusion_steps must be greater than 1.")

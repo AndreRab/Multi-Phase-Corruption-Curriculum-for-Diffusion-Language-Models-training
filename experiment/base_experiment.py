@@ -87,15 +87,15 @@ def run_experiment(config: ExperimentConfig) -> None:
         maximum_probability=0.30,
     )
 
-    corruption_method_2 = RandomTokenCorruption(
-        dictionary_size=len(tokenizer),
+    corruption_method_2 = MaskTokenCorruption(
+        mask_token_id=tokenizer.mask_token_id,
         num_diffusion_steps=config.num_diffusion_steps,
         minimum_probability=0.01,
         maximum_probability=0.95,
     )
-
-    corruption_method_3 = MaskTokenCorruption(
-        mask_token_id=tokenizer.mask_token_id,
+    
+    corruption_method_3 = RandomTokenCorruption(
+        dictionary_size=len(tokenizer),
         num_diffusion_steps=config.num_diffusion_steps,
         minimum_probability=0.01,
         maximum_probability=0.95,
