@@ -36,6 +36,7 @@ python3 run_experiment.py experiments/example.json --dry-run
 
 Supported JSON keys:
 
+- `mode` (`train` or `eval`)
 - `model_name`
 - `dataset_path`
 - `dataset_name`
@@ -49,3 +50,23 @@ Supported JSON keys:
 - `num_diffusion_steps`
 - `max_length`
 - `batch_size`
+
+For evaluation, use `mode: "eval"` and the evaluation keys below:
+
+- `models_path` (list of checkpoint paths)
+- `dataset_path` and `dataset_name` (or only `dataset_name` as a full dataset id)
+- `dataset_split`
+- `corruption_methods` (np. `similar`, `mask`, `random`)
+- `corruption_rates` (każdy rate zostanie przetestowany z każdą metodą)
+- `result_folder`
+- `output_file`
+- `num_diffusion_steps`
+- `max_length`
+- `batch_size`
+
+Example evaluation command:
+
+```bash
+python3 main.py --config experiments/eval.json --dry-run
+torchrun --nproc_per_node=2 main.py --config experiments/eval.json
+```

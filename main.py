@@ -1,11 +1,19 @@
 import argparse
+import json
 from pathlib import Path
 from experiment import (
+    EvalExperimentConfig,
     ExperimentConfig,
-    load_config_values,
-    parse_set_override,
-    print_config,
-    run_experiment
+    load_config_values as load_train_config_values,
+    parse_set_override as parse_train_set_override,
+    print_config as print_train_config,
+    run_experiment,
+    run_eval_experiment,
+)
+from experiment.eval_experiment_config import (
+    load_config_values as load_eval_config_values,
+    parse_set_override as parse_eval_set_override,
+    print_config as print_eval_config,
 )
 
 def parse_args() -> argparse.Namespace:
@@ -32,20 +40,49 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    config_values = load_config_values(args.config)
+    mode = "train"
+    if args.config is not None:
+        with args.config.open() as config_file:
+            raw_config = json.load(config_file)
+        if not isinstance(raw_config, dict):
+            raise ValueError("Config JSON must be an object.")
+        if "overrides" in raw_config:
+            raw_config = raw_config["overrides"]
+        if not isinstance(raw_config, dict):
+            raise ValueError("'overrides' must be an object.")
+        mode = raw_config.get("mode", "train")
 
-    for raw_override in args.set_overrides:
-        key, value = parse_set_override(raw_override)
-        config_values[key] = value
+    if mode == "eval":
+        config_values = load_eval_config_values(args.config)
+        for raw_override in args.set_overrides:
+            key, value = parse_eval_set_override(raw_override)
+            config_values[key] = value
 
-    config = ExperimentConfig(**config_values)
-    print_config(config)
+        config = EvalExperimentConfig(**config_values)
+        print_eval_config(config)
+        
+        if args.dry_run:
+            print("Dry run only. Evaluation was not executed.")
+            return
+        run_eval_experiment(config)
 
-    if args.dry_run:
-        print("Dry run only. Training was not executed.")
-        return
+    if mode == "train":
+        config_values = load_train_config_values(args.config)
+        for raw_override in args.set_overrides:
+            key, value = parse_train_set_override(raw_override)
+            config_values[key] = value
 
-    run_experiment(config)
+        config = ExperimentConfig(**config_values)
+        print_train_config(config)
+
+        if args.dry_run:
+            print("Dry run only. Training was not executed.")
+            return
+
+        run_experiment(config)
+        
+    else:
+        raise ValueError("mode must be either 'train' or 'eval'.")
 
 
 if __name__ == "__main__":

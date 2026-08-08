@@ -1,4 +1,5 @@
 {
+  "mode": "train",
   "model_name": "openai-community/gpt2",
   "dataset_path": "Salesforce/wikitext",
   "dataset_name": "wikitext-2-raw-v1",

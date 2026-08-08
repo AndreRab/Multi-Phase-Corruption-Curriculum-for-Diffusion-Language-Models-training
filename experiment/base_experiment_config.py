@@ -12,6 +12,7 @@ CONFIG_ALIASES = {
 
 @dataclass
 class ExperimentConfig:
+    mode: str = "train"
     model_name: str = "openai-community/gpt2"
     dataset_path: str = "Salesforce/wikitext"
     dataset_name: str = "wikitext-2-raw-v1"
@@ -27,6 +28,8 @@ class ExperimentConfig:
     batch_size: int = 95
 
     def __post_init__(self) -> None:
+        if self.mode != "train":
+            raise ValueError("Training config mode must be 'train'.")
         if self.iterations_intervals is None:
             self.iterations_intervals = [5, 2, 2]
         if self.model_save_path is None:

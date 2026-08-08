@@ -1,2 +1,4 @@
 from experiment.base_experiment_config import ExperimentConfig, load_config_values, parse_set_override, print_config
 from experiment.base_experiment import run_experiment
+from experiment.eval_experiment import run_eval_experiment
+from experiment.eval_experiment_config import EvalExperimentConfig
