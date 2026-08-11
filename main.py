@@ -66,7 +66,7 @@ def main() -> None:
             return
         run_eval_experiment(config)
 
-    if mode == "train":
+    elif mode == "train":
         config_values = load_train_config_values(args.config)
         for raw_override in args.set_overrides:
             key, value = parse_train_set_override(raw_override)

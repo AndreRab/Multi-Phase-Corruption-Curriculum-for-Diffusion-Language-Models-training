@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+from tqdm import tqdm
 
 from experiment.eval_experiment_config import EvalExperimentConfig
 
@@ -181,7 +182,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
         for model_path in config.models_path
     ]
 
-    for method_name, rate in config.corruption_grid:
+    for method_name, rate in tqdm(config.corruption_grid, desc=f"Evaluating corruption method {method_name}"):
         corruption = _build_corruption(method_name, rate, models[0], tokenizer, config)
         collator = DiffusionDataCollator(
             tokenizer=tokenizer,
