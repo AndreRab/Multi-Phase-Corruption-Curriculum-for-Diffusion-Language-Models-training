@@ -23,6 +23,7 @@ class EvalExperimentConfig:
     result_folder: str = "results/eval"
     output_file: str = "evaluation_results.json"
     num_diffusion_steps: int = 100
+    denoise_iterations: int = 10
     max_length: int = 64
     batch_size: int = 32
     corruption_grid: list[tuple[str, float]] = field(init=False, repr=False)
@@ -60,6 +61,8 @@ class EvalExperimentConfig:
         ]
         if self.num_diffusion_steps <= 1:
             raise ValueError("num_diffusion_steps must be greater than 1.")
+        if self.denoise_iterations <= 0:
+            raise ValueError("denoise_iterations must be positive.")
         if self.max_length <= 0:
             raise ValueError("max_length must be positive.")
         if self.batch_size <= 0:

@@ -48,6 +48,7 @@ Supported JSON keys:
 - `training_output_save_path`
 - `train_output_id`
 - `num_diffusion_steps`
+- `denoise_iterations`
 - `max_length`
 - `batch_size`
 

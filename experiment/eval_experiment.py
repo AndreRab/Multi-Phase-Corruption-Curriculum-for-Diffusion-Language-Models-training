@@ -69,41 +69,83 @@ def _build_corruption(name, rate, model, tokenizer, config):
     raise ValueError(f"Unsupported corruption method: {name}")
 
 
-def _evaluate_model(model, loader, device):
+def _evaluate_models(models, batches, device):
     import torch
 
-    total_loss = 0.0
-    total_correct = 0.0
-    total_positions = 0
+    total_loss = [0.0 for _ in models]
+    total_correct = [0.0 for _ in models]
+    total_positions = [0 for _ in models]
 
-    model.eval()
+    for model in models:
+        model.eval()
+
     with torch.no_grad():
-        for batch in loader:
+        for batch in batches:
             batch = {key: value.to(device) for key, value in batch.items()}
             if batch["clean_ids"].numel() == 0:
                 continue
 
-            logits = model(
-                corrupted_ids=batch["corrupted_ids"],
-                timesteps=batch["timesteps"],
-                attention_mask=batch["attention_mask"],
-            )
-            positions = batch["corrupted_positions"].bool() & batch["attention_mask"].bool()
-            position_count = int(positions.sum().item())
-            if position_count == 0:
-                continue
+            for model_idx, model in enumerate(models):
+                logits = model(
+                    corrupted_ids=batch["corrupted_ids"],
+                    timesteps=batch["timesteps"],
+                    attention_mask=batch["attention_mask"],
+                )
+                positions = batch["corrupted_positions"].bool() & batch["attention_mask"].bool()
+                position_count = int(positions.sum().item())
+                if position_count == 0:
+                    continue
 
-            loss = model.compute_loss(
-                logits, batch["clean_ids"], batch["corrupted_positions"], batch["attention_mask"]
-            )
-            predictions = logits.argmax(dim=-1)
-            correct = int((predictions[positions] == batch["clean_ids"][positions]).sum().item())
-            total_loss += loss.item() * position_count
-            total_correct += correct
-            total_positions += position_count
+                loss = model.compute_loss(
+                    logits, batch["clean_ids"], batch["corrupted_positions"], batch["attention_mask"]
+                )
+                predictions = logits.argmax(dim=-1)
+                correct = int((predictions[positions] == batch["clean_ids"][positions]).sum().item())
+                total_loss[model_idx] += loss.item() * position_count
+                total_correct[model_idx] += correct
+                total_positions[model_idx] += position_count
 
     return total_loss, total_correct, total_positions
 
+def _evaluate_models_denoising(models, batches, device, num_iterations):
+    import torch
+
+    total_correct = [0.0 for _ in models]
+    total_positions = [0 for _ in models]
+
+    for model in models:
+        model.eval()
+
+    with torch.no_grad():
+        for batch in batches:
+            batch = {key: value.to(device) for key, value in batch.items()}
+            if batch["clean_ids"].numel() == 0:
+                continue
+
+            for model_idx, model in enumerate(models):
+                reconstructed_ids = model.denoise(
+                    corrupted_ids=batch["corrupted_ids"],
+                    attention_mask=batch["attention_mask"],
+                    corrupted_positions=batch["corrupted_positions"],
+                    num_iterations=num_iterations,
+                )
+                positions = (
+                    batch["corrupted_positions"].bool()
+                    & batch["attention_mask"].bool()
+                )
+                position_count = int(positions.sum().item())
+                if position_count == 0:
+                    continue
+
+                correct = int(
+                    (reconstructed_ids[positions] == batch["clean_ids"][positions])
+                    .sum()
+                    .item()
+                )
+                total_correct[model_idx] += correct
+                total_positions[model_idx] += position_count
+
+    return total_correct, total_positions
 
 def run_eval_experiment(config: EvalExperimentConfig) -> None:
     import torch
@@ -128,36 +170,66 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
     sampler = DistributedSampler(dataset, shuffle=False) if distributed else None
 
     results = []
-    for model_path in config.models_path:
-        model = GPT2DiffusionTransformer.from_file_path(
+    models = [
+        GPT2DiffusionTransformer.from_file_path(
             file_path=model_path,
             model_name=config.model_name,
             num_diffusion_steps=config.num_diffusion_steps,
             vocabulary_size=len(tokenizer),
             device=device,
         ).to(device)
+        for model_path in config.models_path
+    ]
 
-        for method_name, rate in config.corruption_grid:
-            corruption = _build_corruption(method_name, rate, model, tokenizer, config)
-            collator = DiffusionDataCollator(
-                tokenizer=tokenizer,
-                corruption_method=corruption,
-                num_diffusion_steps=config.num_diffusion_steps,
-                max_length=config.max_length,
-            )
-            loader = DataLoader(
-                dataset,
-                batch_size=config.batch_size,
-                shuffle=False,
-                sampler=sampler,
-                collate_fn=collator,
-            )
-            loss_sum, correct, positions = _evaluate_model(model, loader, device)
-            if distributed:
-                values = torch.tensor([loss_sum, correct, positions], dtype=torch.float64, device=device)
-                dist.all_reduce(values, op=dist.ReduceOp.SUM)
-                loss_sum, correct, positions = values.tolist()
+    for method_name, rate in config.corruption_grid:
+        corruption = _build_corruption(method_name, rate, models[0], tokenizer, config)
+        collator = DiffusionDataCollator(
+            tokenizer=tokenizer,
+            corruption_method=corruption,
+            num_diffusion_steps=config.num_diffusion_steps,
+            max_length=config.max_length,
+        )
+        loader = DataLoader(
+            dataset,
+            batch_size=config.batch_size,
+            shuffle=False,
+            sampler=sampler,
+            collate_fn=collator,
+        )
 
+        # Reuse the same corrupted batches for one-step and iterative evaluation.
+        batches = list(loader)
+        loss_sum, correct, positions = _evaluate_models(models, batches, device)
+        correct_denoising, denoising_positions = _evaluate_models_denoising(
+            models,
+            batches,
+            device,
+            config.denoise_iterations,
+        )
+        if distributed:
+            one_step_values = torch.tensor(
+                [loss_sum, correct, positions],
+                dtype=torch.float64,
+                device=device,
+            )
+            denoising_values = torch.tensor(
+                [correct_denoising, denoising_positions],
+                dtype=torch.float64,
+                device=device,
+            )
+            dist.all_reduce(one_step_values, op=dist.ReduceOp.SUM)
+            dist.all_reduce(denoising_values, op=dist.ReduceOp.SUM)
+            loss_sum, correct, positions = one_step_values.tolist()
+            correct_denoising, denoising_positions = denoising_values.tolist()
+
+        for model_path, loss_one, correct_one, positions_one, correct_denoising_one, positions_denoising_one in zip(
+            config.models_path,
+            loss_sum,
+            correct,
+            positions,
+            correct_denoising,
+            denoising_positions,
+        ):
             results.append({
                 "model": Path(model_path).stem,
                 "model_path": model_path,
@@ -165,9 +237,16 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
                 "split": config.dataset_split,
                 "corruption_method": method_name,
                 "corruption_rate": rate,
-                "loss": loss_sum / positions if positions else None,
-                "accuracy": correct / positions if positions else None,
-                "num_positions": int(positions),
+                "loss": loss_one / positions_one if positions_one else None,
+                "accuracy": correct_one / positions_one if positions_one else None,
+                "num_positions": int(positions_one),
+                "accuracy_denoising": (
+                    correct_denoising_one / positions_denoising_one
+                    if positions_denoising_one
+                    else None
+                ),
+                "denoise_iterations": config.denoise_iterations,
+                "num_denoising_positions": int(positions_denoising_one),
             })
 
     if rank == 0:
