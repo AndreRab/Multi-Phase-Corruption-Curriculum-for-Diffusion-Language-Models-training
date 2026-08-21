@@ -10,11 +10,9 @@ def _setup_distributed(torch):
     import torch.distributed as dist
 
     world_size = int(os.environ.get("WORLD_SIZE", "1"))
+    rank = int(os.environ.get("RANK", "0"))
     local_rank = int(os.environ.get("LOCAL_RANK", "0"))
     distributed = world_size > 1
-    if distributed and not dist.is_initialized():
-        backend = "nccl" if torch.cuda.is_available() else "gloo"
-        dist.init_process_group(backend=backend)
 
     if torch.cuda.is_available():
         if distributed:
@@ -25,7 +23,11 @@ def _setup_distributed(torch):
     else:
         device = torch.device("cpu")
 
-    return distributed, int(os.environ.get("RANK", "0")), device
+    if distributed and not dist.is_initialized():
+        backend = "nccl" if device.type == "cuda" else "gloo"
+        dist.init_process_group(backend=backend)
+
+    return distributed, rank, device
 
 
 def _select_non_empty_text_rows(dataset):
@@ -182,7 +184,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
         for model_path in config.models_path
     ]
 
-    for method_name, rate in tqdm(config.corruption_grid, desc=f"Evaluating corruption method {method_name}"):
+    for method_name, rate in tqdm(config.corruption_grid, desc=f"Evaluating corruption methods"):
         corruption = _build_corruption(method_name, rate, models[0], tokenizer, config)
         collator = DiffusionDataCollator(
             tokenizer=tokenizer,

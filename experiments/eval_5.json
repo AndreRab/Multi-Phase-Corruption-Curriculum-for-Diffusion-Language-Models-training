@@ -13,9 +13,9 @@
   "corruption_methods": ["similar", "mask", "random"],
   "corruption_rates": [0.25, 0.50, 0.75, 0.90, 0.95],
   "result_folder": "results/eval",
-  "output_file": "evaluation_results.json",
+  "output_file": "evaluation_results_5.json",
   "num_diffusion_steps": 100,
-  "denoise_iterations": 10,
+  "denoise_iterations": 5,
   "max_length": 64,
   "batch_size": 32
 }
