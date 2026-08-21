@@ -3,7 +3,7 @@ import os
 from dataclasses import asdict
 from pathlib import Path
 
-from experiment.base_experiment_config import ExperimentConfig
+from experiment.train_multi_experiment_config import TrainMultiExperimentConfig
 
 
 def _setup_distributed(torch):
@@ -39,7 +39,7 @@ def _select_non_empty_text_rows(dataset):
     return dataset.select(non_empty_indices)
 
 
-def run_experiment(config: ExperimentConfig) -> None:
+def run_experiment(config: TrainMultiExperimentConfig) -> None:
     import torch
     import torch.distributed as dist
     from torch.nn.parallel import DistributedDataParallel
@@ -160,6 +160,8 @@ def run_experiment(config: ExperimentConfig) -> None:
         train_loader,
         test_loader,
         is_main_process=is_main_process,
+        train_diffusion_steps=config.train_diffusion_steps,
+        rollout_loss_decay=config.rollout_loss_decay,
     )
 
     if is_main_process:

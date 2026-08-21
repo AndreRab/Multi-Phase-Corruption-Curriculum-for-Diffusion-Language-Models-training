@@ -1,13 +1,16 @@
 {
-  "mode": "train",
+  "mode": "train_multi",
   "model_name": "openai-community/gpt2",
   "dataset_path": "Salesforce/wikitext",
   "dataset_name": "wikitext-2-raw-v1",
-  "iterations_intervals": [10, 10, 10],
+  "iterations_intervals": [30, 30, 40],
   "learning_rate": 0.00001,
   "result_folder": "results",
-  "model_id": "v1",
+  "model_id": "mix_30_30_40_2_step",
+  "train_output_id": "mix_30_30_40_2_step",
   "num_diffusion_steps": 100,
   "max_length": 64,
-  "batch_size": 95
+  "batch_size": 32,
+  "train_diffusion_steps": 2,
+  "rollout_loss_decay": 0.5
 }

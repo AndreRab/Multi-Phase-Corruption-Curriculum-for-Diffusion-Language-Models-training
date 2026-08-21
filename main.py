@@ -2,18 +2,16 @@ import argparse
 import json
 from pathlib import Path
 from experiment import (
+    load_eval_config_values,
+    parse_eval_set_override,
+    print_eval_config,
     EvalExperimentConfig,
-    ExperimentConfig,
-    load_config_values as load_train_config_values,
-    parse_set_override as parse_train_set_override,
-    print_config as print_train_config,
-    run_experiment,
     run_eval_experiment,
-)
-from experiment.eval_experiment_config import (
-    load_config_values as load_eval_config_values,
-    parse_set_override as parse_eval_set_override,
-    print_config as print_eval_config,
+    load_train_multi_config_values,
+    parse_train_multi_set_override,
+    print_train_multi_config,
+    run_multi_experiment,
+    TrainMultiExperimentConfig,
 )
 
 def parse_args() -> argparse.Namespace:
@@ -66,23 +64,22 @@ def main() -> None:
             return
         run_eval_experiment(config)
 
-    elif mode == "train":
-        config_values = load_train_config_values(args.config)
+    elif mode == "train" or mode == "train_multi":
+        config_values = load_train_multi_config_values(args.config)
         for raw_override in args.set_overrides:
-            key, value = parse_train_set_override(raw_override)
+            key, value = parse_train_multi_set_override(raw_override)
             config_values[key] = value
 
-        config = ExperimentConfig(**config_values)
-        print_train_config(config)
+        config = TrainMultiExperimentConfig(**config_values)
+        print_train_multi_config(config)
 
         if args.dry_run:
             print("Dry run only. Training was not executed.")
             return
 
-        run_experiment(config)
-        
+        run_multi_experiment(config)
     else:
-        raise ValueError("mode must be either 'train' or 'eval'.")
+        raise ValueError("mode must be either 'train', 'train_multi' or 'eval'.")
 
 
 if __name__ == "__main__":
