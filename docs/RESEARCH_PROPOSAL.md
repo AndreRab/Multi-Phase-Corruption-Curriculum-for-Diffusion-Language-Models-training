@@ -134,6 +134,23 @@ The main hypothesis is that starting from semantically close corruption teaches 
 
 This direction can be described as a **semantic-distance-controlled multi-phase corruption curriculum** for diffusion language models. The expected contribution is not a new Transformer backbone, but a new training-time corruption policy that can be compared directly against standard masked and random discrete diffusion approaches.
 
+## Deliberate difference between training and final validation
+
+The training rollout and the final denoising procedure intentionally use
+different position-update policies. During training, the model's predictions
+are fed back into the next rollout step for every corrupted position. This
+maximizes exposure to the model's own errors and provides a broad learning
+signal for iterative correction.
+
+During final validation/inference, the model updates only the positions with
+the highest confidence at the current step. The remaining positions are kept
+unchanged until a later iteration, so that reliable corrections can improve
+the context before more uncertain tokens are modified. This conservative
+confidence-based refinement is the intended inference policy. The difference
+between the two procedures is therefore a conscious design decision: training
+prioritizes learning from self-generated errors, while validation measures the
+quality of selective, confidence-guided denoising.
+
 ---
 
 # Method Comparison and Open Questions

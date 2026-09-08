@@ -67,6 +67,22 @@ Training and evaluation share the same corruption contract:
 - evaluation `corruption_rates` controls the per-condition maximum probability
   while using the same method implementations and minimum probability.
 
+## Intentional train/evaluation difference
+
+Training and final evaluation do not use exactly the same position-update
+policy by design. During training, each rollout step feeds the model's own
+predictions back into the next step for all corrupted positions. This exposes
+the model to its self-generated errors and provides a broad learning signal
+for iterative correction.
+
+During evaluation, denoising is more conservative: only the currently most
+confident positions are updated, while the remaining positions are left for
+later iterations. This confidence-based selective refinement models the
+intended inference behaviour, where reliable corrections improve the context
+before less certain tokens are changed. The difference is therefore an
+intentional training strategy versus final inference policy, not an accidental
+implementation mismatch.
+
 For evaluation, use `mode: "eval"` and the evaluation keys below:
 
 - `models_path` (list of checkpoint paths)
