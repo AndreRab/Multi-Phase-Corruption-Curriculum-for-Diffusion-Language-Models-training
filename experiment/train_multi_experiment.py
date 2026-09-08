@@ -54,8 +54,10 @@ def run_experiment(config: TrainMultiExperimentConfig) -> None:
     )
     from model_wrappers import GPT2DiffusionTransformer
     from train_utils import DiffusionDataCollator, TrainingOutput, train
+    from experiment.reproducibility import seed_everything
 
     distributed, rank, local_rank, device = _setup_distributed(torch)
+    seed_everything(config.seed)
     is_main_process = rank == 0
 
     tokenizer = AutoTokenizer.from_pretrained(config.model_name)
@@ -144,6 +146,7 @@ def run_experiment(config: TrainMultiExperimentConfig) -> None:
         is_main_process=is_main_process,
         train_diffusion_steps=config.train_diffusion_steps,
         rollout_loss_decay=config.rollout_loss_decay,
+        seed=config.seed,
     )
 
     if is_main_process:

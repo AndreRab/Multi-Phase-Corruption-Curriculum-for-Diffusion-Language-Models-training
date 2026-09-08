@@ -1,6 +1,7 @@
 {
   "mode": "train_multi",
   "model_name": "openai-community/gpt2",
+  "seed": 42,
   "dataset_path": "Salesforce/wikitext",
   "dataset_name": "wikitext-2-raw-v1",
   "iterations_intervals": [100, 0, 0],

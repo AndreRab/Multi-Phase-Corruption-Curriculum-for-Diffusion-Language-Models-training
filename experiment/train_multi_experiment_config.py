@@ -7,11 +7,13 @@ from corruption_utils.factory import (
     CORRUPTION_METHOD_ORDER,
     validate_corruption_methods,
 )
+from experiment.reproducibility import validate_seed
 
 @dataclass
 class TrainMultiExperimentConfig:
     mode: str = "train_multi"
     model_name: str = "openai-community/gpt2"
+    seed: int | None = None
     dataset_path: str = "Salesforce/wikitext"
     dataset_name: str = "wikitext-2-raw-v1"
     iterations_intervals: list[int] | None = None
@@ -36,6 +38,7 @@ class TrainMultiExperimentConfig:
     def __post_init__(self) -> None:
         if self.mode != "train_multi" and self.mode != "train":
             raise ValueError("Training config mode must be 'train_multi' or 'train'.")
+        validate_seed(self.seed)
         if self.iterations_intervals is None:
             self.iterations_intervals = [5, 2, 2]
         if self.model_save_path is None:

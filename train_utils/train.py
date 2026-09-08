@@ -14,6 +14,7 @@ class TrainingOutput:
     test_acc: list[float]
     iterations_intervals: list[int]
     corruption_methods: list[str] = field(default_factory=list)
+    seed: int | None = None
     train_step_loss: list[list[float]] = field(default_factory=list)
     test_step_loss: list[list[float]] = field(default_factory=list)
     train_step_acc: list[list[float]] = field(default_factory=list)
@@ -119,6 +120,7 @@ def train(
     is_main_process: bool = True,
     train_diffusion_steps: int = 1,
     rollout_loss_decay: float = 0.5,
+    seed: int | None = None,
 ) -> TrainingOutput:
     model = model.to(device)
     model.train()
@@ -246,6 +248,7 @@ def train(
         test_acc=test_acc,
         iterations_intervals=train_loader.collate_fn.corruption_method.iterations_intervals,
         corruption_methods=train_loader.collate_fn.corruption_method.method_names(),
+        seed=seed,
         train_step_loss=train_step_loss,
         test_step_loss=test_step_loss,
         train_step_acc=train_step_acc,

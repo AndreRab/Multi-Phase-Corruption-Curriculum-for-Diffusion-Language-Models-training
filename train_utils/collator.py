@@ -10,11 +10,18 @@ class DiffusionDataCollator:
         corruption_method: CorruptionMethod,
         num_diffusion_steps: int,
         max_length: int = 128,
+        fixed_timestep: int | None = None,
     ) -> None:
         self.tokenizer = tokenizer
         self.corruption_method = corruption_method
         self.num_diffusion_steps = num_diffusion_steps
         self.max_length = max_length
+        if fixed_timestep is not None and not 0 <= fixed_timestep < num_diffusion_steps:
+            raise ValueError(
+                "fixed_timestep must be in the interval "
+                "[0, num_diffusion_steps)."
+            )
+        self.fixed_timestep = fixed_timestep
 
     def __call__(self, examples: list[dict]) -> dict[str, torch.Tensor]:
         texts = [example["text"] for example in examples]
@@ -46,11 +53,18 @@ class DiffusionDataCollator:
 
         batch_size = clean_ids.size(0)
 
-        timesteps = torch.randint(
-            low=0,
-            high=self.num_diffusion_steps,
-            size=(batch_size,),
-        )
+        if self.fixed_timestep is None:
+            timesteps = torch.randint(
+                low=0,
+                high=self.num_diffusion_steps,
+                size=(batch_size,),
+            )
+        else:
+            timesteps = torch.full(
+                (batch_size,),
+                fill_value=self.fixed_timestep,
+                dtype=torch.long,
+            )
 
         corruption = self.corruption_method(
             clean_ids=clean_ids,

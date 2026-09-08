@@ -7,12 +7,14 @@ from corruption_utils.factory import (
     CORRUPTION_METHOD_ORDER,
     validate_corruption_methods,
 )
+from experiment.reproducibility import validate_seed
 
 
 @dataclass
 class EvalExperimentConfig:
     mode: str = "eval"
     model_name: str = "openai-community/gpt2"
+    seed: int | None = None
     models_path: list[str] = field(default_factory=list)
     dataset_path: str | None = None
     dataset_name: str = "cimec/lambada"
@@ -38,6 +40,7 @@ class EvalExperimentConfig:
     def __post_init__(self) -> None:
         if self.mode != "eval":
             raise ValueError("Evaluation config mode must be 'eval'.")
+        validate_seed(self.seed)
         if not self.models_path:
             raise ValueError("models_path must contain at least one checkpoint.")
         self.corruption_methods = validate_corruption_methods(self.corruption_methods)

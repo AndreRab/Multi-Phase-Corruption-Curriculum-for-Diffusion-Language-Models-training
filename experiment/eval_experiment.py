@@ -141,8 +141,10 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
 
     from model_wrappers import GPT2DiffusionTransformer
     from train_utils import DiffusionDataCollator
+    from experiment.reproducibility import seed_everything
 
     distributed, rank, device = _setup_distributed(torch)
+    seed_everything(config.seed)
     tokenizer = AutoTokenizer.from_pretrained(config.model_name)
     tokenizer.add_special_tokens({"pad_token": "<|pad|>", "mask_token": "<|mask|>"})
 
@@ -165,6 +167,11 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
         for model_path in config.models_path
     ]
 
+    # Model construction may consume random numbers when a checkpoint is
+    # initialized before loading. Reset the evaluation stream afterwards so
+    # the same seed produces the same corrupted benchmark across K configs.
+    seed_everything(config.seed)
+
     for method_name, rate in tqdm(config.corruption_grid, desc=f"Evaluating corruption methods"):
         corruption = _build_corruption(method_name, rate, models[0], tokenizer, config)
         collator = DiffusionDataCollator(
@@ -172,6 +179,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
             corruption_method=corruption,
             num_diffusion_steps=config.num_diffusion_steps,
             max_length=config.max_length,
+            fixed_timestep=config.num_diffusion_steps - 1,
         )
         loader = DataLoader(
             dataset,
@@ -221,6 +229,8 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
                 "split": config.dataset_split,
                 "corruption_method": method_name,
                 "corruption_rate": rate,
+                "seed": config.seed,
+                "initial_timestep": config.num_diffusion_steps - 1,
                 "loss": loss_one / positions_one if positions_one else None,
                 "accuracy": correct_one / positions_one if positions_one else None,
                 "num_positions": int(positions_one),

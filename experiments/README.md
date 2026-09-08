@@ -38,6 +38,7 @@ Supported JSON keys:
 
 - `mode` (`train` or `eval`)
 - `model_name`
+- `seed` (optional; omit it to leave random number generators unseeded)
 - `dataset_path`
 - `dataset_name`
 - `iterations_intervals`
@@ -57,6 +58,18 @@ Supported JSON keys:
 - `denoise_iterations`
 - `max_length`
 - `batch_size`
+
+If `seed` is omitted or set to `null`, the run is intentionally unseeded. New
+training outputs and evaluation rows store `"seed": null`, making such runs
+visibly different from seeded runs. Historical result files created before
+this field was added remain unchanged and should be treated according to the
+configuration used to create them. When a non-negative integer is provided,
+Python, NumPy, and PyTorch random generators are initialized with that value.
+
+Evaluation always creates its initial corrupted sequences at the maximum
+timestep (`num_diffusion_steps - 1`). This makes one-step and iterative
+evaluation start from the same maximally noisy state; training keeps its
+per-example random starting timesteps.
 
 Training and evaluation share the same corruption contract:
 

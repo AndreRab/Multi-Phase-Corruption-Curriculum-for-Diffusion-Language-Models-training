@@ -1,6 +1,7 @@
 {
   "mode": "eval",
   "model_name": "openai-community/gpt2",
+  "seed": 42,
   "models_path": [
     "results/models/default.pt",
     "results/models/similar_100.pt",
