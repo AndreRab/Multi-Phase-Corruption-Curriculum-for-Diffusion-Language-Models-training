@@ -16,11 +16,16 @@ class DiffusionDataCollator:
         self.corruption_method = corruption_method
         self.num_diffusion_steps = num_diffusion_steps
         self.max_length = max_length
-        if fixed_timestep is not None and not 0 <= fixed_timestep < num_diffusion_steps:
-            raise ValueError(
-                "fixed_timestep must be in the interval "
-                "[0, num_diffusion_steps)."
-            )
+        if fixed_timestep is not None:
+            if (
+                isinstance(fixed_timestep, bool)
+                or not isinstance(fixed_timestep, int)
+                or not 0 <= fixed_timestep < num_diffusion_steps
+            ):
+                raise ValueError(
+                    "fixed_timestep must be an integer in the interval "
+                    "[0, num_diffusion_steps)."
+                )
         self.fixed_timestep = fixed_timestep
 
     def __call__(self, examples: list[dict]) -> dict[str, torch.Tensor]:

@@ -101,13 +101,14 @@ def run_experiment(config: TrainMultiExperimentConfig) -> None:
         max_length=config.max_length,
     )
 
+    sampler_seed = config.seed if config.seed is not None else 0
     train_sampler = (
-        DistributedSampler(dataset_train, shuffle=True)
+        DistributedSampler(dataset_train, shuffle=True, seed=sampler_seed)
         if distributed
         else None
     )
     test_sampler = (
-        DistributedSampler(dataset_test, shuffle=False)
+        DistributedSampler(dataset_test, shuffle=False, seed=sampler_seed)
         if distributed
         else None
     )
