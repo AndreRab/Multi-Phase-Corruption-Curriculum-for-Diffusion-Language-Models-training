@@ -1,7 +1,12 @@
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+from corruption_utils.factory import (
+    CORRUPTION_METHOD_ORDER,
+    validate_corruption_methods,
+)
 
 @dataclass
 class TrainMultiExperimentConfig:
@@ -19,6 +24,12 @@ class TrainMultiExperimentConfig:
     num_diffusion_steps: int = 100
     train_diffusion_steps: int = 1
     rollout_loss_decay: float = 0.5
+    corruption_methods: list[str] = field(
+        default_factory=lambda: list(CORRUPTION_METHOD_ORDER)
+    )
+    corruption_minimum_probability: float = 0.01
+    corruption_maximum_probability: float = 0.95
+    similar_number_of_neighbors: int = 20
     max_length: int = 64
     batch_size: int = 95
 
@@ -31,8 +42,11 @@ class TrainMultiExperimentConfig:
             self.model_save_path = f"{self.result_folder}/models"
         if self.training_output_save_path is None:
             self.training_output_save_path = f"{self.result_folder}/training_output"
-        if len(self.iterations_intervals) != 3:
-            raise ValueError("iterations_intervals must contain one value per corruption method.")
+        self.corruption_methods = validate_corruption_methods(self.corruption_methods)
+        if len(self.iterations_intervals) != len(self.corruption_methods):
+            raise ValueError(
+                "iterations_intervals must contain one value per corruption method."
+            )
         if any(interval < 0 for interval in self.iterations_intervals):
             raise ValueError("iterations_intervals values must be positive.")
         if self.train_diffusion_steps < 1:
@@ -45,6 +59,13 @@ class TrainMultiExperimentConfig:
             raise ValueError("batch_size must be positive.")
         if not 0 < self.rollout_loss_decay <= 1:
             raise ValueError("rollout_loss_decay must be in (0, 1].")
+        if not 0 < self.corruption_minimum_probability <= self.corruption_maximum_probability <= 1:
+            raise ValueError(
+                "corruption probabilities must satisfy "
+                "0 < minimum <= maximum <= 1."
+            )
+        if self.similar_number_of_neighbors <= 0:
+            raise ValueError("similar_number_of_neighbors must be positive.")
 
 
 def set_config_value(config: dict[str, Any], key: str, value: Any) -> None:

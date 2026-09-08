@@ -26,6 +26,10 @@ class MixedTokenCorruption(CorruptionMethod):
 
         return self.corruption_methods[-1]
 
+    def method_names(self) -> list[str]:
+        """Return method names in the same order as the training intervals."""
+        return [str(method) for method in self.corruption_methods]
+
     def __str__(self) -> str:
         return str(self.current_method())
 

@@ -12,6 +12,8 @@
   "dataset_split": "test",
   "corruption_methods": ["similar", "mask", "random"],
   "corruption_rates": [0.25, 0.50, 0.75, 0.90, 0.95],
+  "corruption_minimum_probability": 0.01,
+  "similar_number_of_neighbors": 20,
   "result_folder": "results/eval",
   "output_file": "evaluation_results_50.json",
   "num_diffusion_steps": 100,

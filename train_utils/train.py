@@ -12,7 +12,8 @@ class TrainingOutput:
     test_loss: list[float]
     train_acc: list[float]
     test_acc: list[float]
-    iterations_intervals: dict
+    iterations_intervals: list[int]
+    corruption_methods: list[str] = field(default_factory=list)
     train_step_loss: list[list[float]] = field(default_factory=list)
     test_step_loss: list[list[float]] = field(default_factory=list)
     train_step_acc: list[list[float]] = field(default_factory=list)
@@ -223,6 +224,7 @@ def train(
         train_acc=train_acc,
         test_acc=test_acc,
         iterations_intervals=train_loader.collate_fn.corruption_method.iterations_intervals,
+        corruption_methods=train_loader.collate_fn.corruption_method.method_names(),
         train_step_loss=train_step_loss,
         test_step_loss=test_step_loss,
         train_step_acc=train_step_acc,

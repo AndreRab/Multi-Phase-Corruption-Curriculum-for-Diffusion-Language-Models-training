@@ -48,9 +48,24 @@ Supported JSON keys:
 - `training_output_save_path`
 - `train_output_id`
 - `num_diffusion_steps`
+- `train_diffusion_steps`
+- `rollout_loss_decay`
+- `corruption_methods`
+- `corruption_minimum_probability`
+- `corruption_maximum_probability`
+- `similar_number_of_neighbors`
 - `denoise_iterations`
 - `max_length`
 - `batch_size`
+
+Training and evaluation share the same corruption contract:
+
+- method order is `similar`, `mask`, `random`;
+- `iterations_intervals` follows that order during training;
+- `corruption_minimum_probability`, `corruption_maximum_probability`, and
+  `similar_number_of_neighbors` are explicit training parameters;
+- evaluation `corruption_rates` controls the per-condition maximum probability
+  while using the same method implementations and minimum probability.
 
 For evaluation, use `mode: "eval"` and the evaluation keys below:
 
@@ -59,9 +74,12 @@ For evaluation, use `mode: "eval"` and the evaluation keys below:
 - `dataset_split`
 - `corruption_methods` (np. `similar`, `mask`, `random`)
 - `corruption_rates` (każdy rate zostanie przetestowany z każdą metodą)
+- `corruption_minimum_probability`
+- `similar_number_of_neighbors`
 - `result_folder`
 - `output_file`
 - `num_diffusion_steps`
+- `denoise_iterations`
 - `max_length`
 - `batch_size`
 

@@ -8,6 +8,10 @@
   "model_id": "random_100",
   "train_output_id": "random_100",
   "num_diffusion_steps": 100,
+  "corruption_methods": ["similar", "mask", "random"],
+  "corruption_minimum_probability": 0.01,
+  "corruption_maximum_probability": 0.95,
+  "similar_number_of_neighbors": 20,
   "max_length": 64,
   "batch_size": 32
 }

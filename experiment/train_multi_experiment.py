@@ -49,10 +49,8 @@ def run_experiment(config: TrainMultiExperimentConfig) -> None:
     from transformers import AutoTokenizer
 
     from corruption_utils import (
-        MaskTokenCorruption,
         MixedTokenCorruption,
-        RandomTokenCorruption,
-        SimilarTokenCorruption,
+        build_corruptions,
     )
     from model_wrappers import GPT2DiffusionTransformer
     from train_utils import DiffusionDataCollator, TrainingOutput, train
@@ -79,34 +77,18 @@ def run_experiment(config: TrainMultiExperimentConfig) -> None:
     dataset_test = _select_non_empty_text_rows(ds["test"])
     dataset_train = _select_non_empty_text_rows(ds["train"])
 
-    corruption_method_1 = SimilarTokenCorruption(
-        embedding_weight=model.transformer.wte.weight,
+    corruption_methods = build_corruptions(
+        config.corruption_methods,
+        model=model,
+        tokenizer=tokenizer,
         num_diffusion_steps=config.num_diffusion_steps,
-        number_of_neighbors=20,
-        minimum_probability=0.01,
-        maximum_probability=0.30,
-    )
-
-    corruption_method_2 = MaskTokenCorruption(
-        mask_token_id=tokenizer.mask_token_id,
-        num_diffusion_steps=config.num_diffusion_steps,
-        minimum_probability=0.01,
-        maximum_probability=0.95,
-    )
-    
-    corruption_method_3 = RandomTokenCorruption(
-        dictionary_size=len(tokenizer),
-        num_diffusion_steps=config.num_diffusion_steps,
-        minimum_probability=0.01,
-        maximum_probability=0.95,
+        minimum_probability=config.corruption_minimum_probability,
+        maximum_probability=config.corruption_maximum_probability,
+        similar_number_of_neighbors=config.similar_number_of_neighbors,
     )
 
     corruption_method = MixedTokenCorruption(
-        corruption_methods=[
-            corruption_method_1,
-            corruption_method_2,
-            corruption_method_3,
-        ],
+        corruption_methods=corruption_methods,
         iterations_intervals=config.iterations_intervals,
     )
 

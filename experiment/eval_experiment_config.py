@@ -3,6 +3,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from corruption_utils.factory import (
+    CORRUPTION_METHOD_ORDER,
+    validate_corruption_methods,
+)
+
 
 @dataclass
 class EvalExperimentConfig:
@@ -13,13 +18,15 @@ class EvalExperimentConfig:
     dataset_name: str = "cimec/lambada"
     dataset_split: str = "test"
     corruption_methods: list[str] = field(
-        default_factory=lambda: ["similar", "mask", "random"]
+        default_factory=lambda: list(CORRUPTION_METHOD_ORDER)
     )
     corruption_rates: list[float] = field(
         default_factory=lambda: [0.25, 0.50, 0.75, 0.90, 0.95]
     )
     # Optional method-specific format. Each value may be a scalar or a list.
     corruptions: dict[str, float | list[float]] | None = None
+    corruption_minimum_probability: float = 0.01
+    similar_number_of_neighbors: int = 20
     result_folder: str = "results/eval"
     output_file: str = "evaluation_results.json"
     num_diffusion_steps: int = 100
@@ -33,9 +40,10 @@ class EvalExperimentConfig:
             raise ValueError("Evaluation config mode must be 'eval'.")
         if not self.models_path:
             raise ValueError("models_path must contain at least one checkpoint.")
-        allowed_methods = {"similar", "mask", "random"}
+        self.corruption_methods = validate_corruption_methods(self.corruption_methods)
         if self.corruptions is not None:
             self.corruption_methods = list(self.corruptions)
+            self.corruption_methods = validate_corruption_methods(self.corruption_methods)
             method_rates = {
                 method: value if isinstance(value, list) else [value]
                 for method, value in self.corruptions.items()
@@ -47,11 +55,12 @@ class EvalExperimentConfig:
                 for method in self.corruption_methods
             }
 
-        unknown_methods = set(self.corruption_methods) - allowed_methods
-        if unknown_methods:
-            raise ValueError(f"Unknown corruption method(s): {sorted(unknown_methods)}")
         if not self.corruption_methods or not self.corruption_rates:
             raise ValueError("corruption_methods and corruption_rates cannot be empty.")
+        if not 0 < self.corruption_minimum_probability <= 1:
+            raise ValueError("corruption_minimum_probability must be in (0, 1].")
+        if self.similar_number_of_neighbors <= 0:
+            raise ValueError("similar_number_of_neighbors must be positive.")
         if any(rate <= 0 or rate > 1 for rates in method_rates.values() for rate in rates):
             raise ValueError("corruption_rates must be in the interval (0, 1].")
         self.corruption_grid = [

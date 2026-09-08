@@ -40,36 +40,17 @@ def _select_non_empty_text_rows(dataset):
 
 
 def _build_corruption(name, rate, model, tokenizer, config):
-    from corruption_utils import (
-        MaskTokenCorruption,
-        RandomTokenCorruption,
-        SimilarTokenCorruption,
-    )
+    from corruption_utils import build_corruption
 
-    if name == "similar":
-        return SimilarTokenCorruption(
-            embedding_weight=model.transformer.wte.weight,
-            num_diffusion_steps=config.num_diffusion_steps,
-            number_of_neighbors=20,
-            minimum_probability=0.01,
-            maximum_probability=rate,
-        )
-    if name == "mask":
-        return MaskTokenCorruption(
-            mask_token_id=tokenizer.mask_token_id,
-            num_diffusion_steps=config.num_diffusion_steps,
-            minimum_probability=0.01,
-            maximum_probability=rate,
-        )
-    if name == "random":
-        return RandomTokenCorruption(
-            dictionary_size=len(tokenizer),
-            num_diffusion_steps=config.num_diffusion_steps,
-            minimum_probability=0.01,
-            maximum_probability=rate,
-        )
-        
-    raise ValueError(f"Unsupported corruption method: {name}")
+    return build_corruption(
+        name,
+        model=model,
+        tokenizer=tokenizer,
+        num_diffusion_steps=config.num_diffusion_steps,
+        minimum_probability=config.corruption_minimum_probability,
+        maximum_probability=rate,
+        similar_number_of_neighbors=config.similar_number_of_neighbors,
+    )
 
 
 def _evaluate_models(models, batches, device):
