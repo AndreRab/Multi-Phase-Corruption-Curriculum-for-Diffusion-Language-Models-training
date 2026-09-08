@@ -42,22 +42,43 @@ def _prepare_batch(batch: dict[str, torch.Tensor], device: torch.device) -> dict
     return {key: value[valid_samples] for key, value in batch.items()}
 
 
+def _rollout_timestep(
+    base_timesteps: torch.Tensor,
+    step: int,
+    num_steps: int,
+    num_diffusion_steps: int,
+) -> torch.Tensor:
+    """Move from the sampled noisy state toward the clean state over rollout steps."""
+
+    progress = step / max(num_steps - 1, 1)
+    timestep = base_timesteps - torch.round(
+        base_timesteps.float() * progress
+    ).long()
+    return timestep.clamp(min=0, max=num_diffusion_steps - 1)
+
+
 def _rollout(
     model: GPT2DiffusionTransformer,
     batch: dict[str, torch.Tensor],
     num_steps: int,
     loss_decay: float,
 ) -> tuple[torch.Tensor, list[torch.Tensor], list[float]]:
-    """Run teacher-forced step 1 and then feed detached model predictions back in."""
+    """Run iterative refinement with a descending timestep schedule."""
     model_for_metrics = _unwrap_model(model)
     current_ids = batch["corrupted_ids"]
     step_losses: list[torch.Tensor] = []
     step_accuracies: list[float] = []
 
     for step in range(num_steps):
+        timesteps = _rollout_timestep(
+            base_timesteps=batch["timesteps"],
+            step=step,
+            num_steps=num_steps,
+            num_diffusion_steps=model_for_metrics.num_diffusion_steps,
+        )
         logits = model(
             corrupted_ids=current_ids,
-            timesteps=batch["timesteps"],
+            timesteps=timesteps,
             attention_mask=batch["attention_mask"],
         )
         loss = model_for_metrics.compute_loss(

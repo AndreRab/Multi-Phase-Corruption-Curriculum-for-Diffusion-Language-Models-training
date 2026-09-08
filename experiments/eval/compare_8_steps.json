@@ -1,0 +1,27 @@
+{
+  "mode": "eval",
+  "model_name": "openai-community/gpt2",
+  "models_path": [
+    "results/models/default.pt",
+    "results/models/similar_100.pt",
+    "results/models/mask_100.pt",
+    "results/models/random_100.pt",
+    "results/models/mix_30_30_40.pt",
+    "results/models/similar_100_4_steps.pt",
+    "results/models/mask_100_4_steps.pt",
+    "results/models/random_100_4_steps.pt",
+    "results/models/mix_30_30_40_4_step.pt"
+  ],
+  "dataset_name": "cimec/lambada",
+  "dataset_split": "test",
+  "corruption_methods": ["similar", "mask", "random"],
+  "corruption_rates": [0.25, 0.50, 0.75, 0.90, 0.95],
+  "corruption_minimum_probability": 0.01,
+  "similar_number_of_neighbors": 20,
+  "result_folder": "results/eval",
+  "output_file": "evaluation_results_compare_8_steps.json",
+  "num_diffusion_steps": 100,
+  "denoise_iterations": 8,
+  "max_length": 64,
+  "batch_size": 32
+}
