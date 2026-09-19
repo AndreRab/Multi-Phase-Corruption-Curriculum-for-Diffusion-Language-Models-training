@@ -1,0 +1,11 @@
+{
+    "train_loss": [],
+    "test_loss": [],
+    "train_acc": [],
+    "test_acc": [],
+    "iterations_intervals": [
+        0,
+        0,
+        0
+    ]
+}
