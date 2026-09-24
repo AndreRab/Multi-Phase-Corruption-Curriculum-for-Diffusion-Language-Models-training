@@ -14,7 +14,7 @@
   "corruption_minimum_probability": 0.01,
   "similar_number_of_neighbors": 20,
   "result_folder": "results/eval",
-  "output_file": "evaluation_results_2.json",
+  "output_file": "evaluation_results_2_4_steps.json",
   "num_diffusion_steps": 100,
   "denoise_iterations": 2,
   "max_length": 64,
