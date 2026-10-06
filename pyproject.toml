@@ -8,4 +8,7 @@ dependencies = [
     "datasets",
     "tqdm",
     "matplotlib",
+    "sacrebleu>=2.4",
+    "rouge-score>=0.1.2",
+    "mauve-text>=0.4",
 ]

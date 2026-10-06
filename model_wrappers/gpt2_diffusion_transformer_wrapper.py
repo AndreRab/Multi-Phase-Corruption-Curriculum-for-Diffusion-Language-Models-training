@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from torch import nn
 from transformers import AutoModelForCausalLM
 from pathlib import Path
+from typing import Callable
 
 class GPT2DiffusionTransformer(nn.Module):
     def __init__(
@@ -108,7 +109,9 @@ class GPT2DiffusionTransformer(nn.Module):
         corrupted_positions: torch.Tensor | None = None,
         num_iterations: int = 10,
         temperature: float = 1.0,
+        on_commit: Callable[[int, torch.Tensor, torch.Tensor], None] | None = None,
     ) -> torch.Tensor:
+        """Refine tokens, optionally observing logits only at final commitment."""
         device = next(self.parameters()).device
 
         reconstructed_ids = corrupted_ids.clone().to(device)
@@ -171,6 +174,9 @@ class GPT2DiffusionTransformer(nn.Module):
                 current_confidence = confidence[batch_idx, current_positions]
                 selected_local_indices = torch.topk(current_confidence, k=min(number_to_update, current_positions.numel())).indices
                 selected_positions = current_positions[selected_local_indices]
+
+                if on_commit is not None:
+                    on_commit(batch_idx, selected_positions, logits[batch_idx, selected_positions])
 
                 reconstructed_ids[batch_idx, selected_positions] = predicted_ids[batch_idx, selected_positions]
                 active_positions[batch_idx, selected_positions] = False

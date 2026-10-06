@@ -8,6 +8,8 @@ from corruption_utils.factory import (
     validate_corruption_methods,
 )
 from experiments.reproducibility import validate_seed
+from metrics.metirc_enum import METRICS
+from metrics.factory import parse_metric
 
 
 @dataclass
@@ -35,12 +37,24 @@ class EvalExperimentConfig:
     denoise_iterations: int = 10
     max_length: int = 64
     batch_size: int = 32
+    mauve_model: str = "gpt2-large"
+    mauve_max_text_length: int = 256
+    mauve_device_id: int = -1
+    metrics: list[METRICS] = field(default_factory=lambda: list(METRICS))
     corruption_grid: list[tuple[str, float]] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         if self.mode != "eval":
             raise ValueError("Evaluation config mode must be 'eval'.")
         validate_seed(self.seed)
+        if not isinstance(self.metrics, list) or not self.metrics:
+            raise ValueError("metrics must be a nonempty list of metric names.")
+        try:
+            self.metrics = list(dict.fromkeys(parse_metric(name) for name in self.metrics))
+        except (ValueError, TypeError) as exc:
+            raise ValueError(f"Unknown metric; choose from {[name.value for name in METRICS]}") from exc
+        if self.mauve_max_text_length <= 0 or self.mauve_device_id < -1:
+            raise ValueError("Invalid MAUVE length or device id.")
         if not self.models_path:
             raise ValueError("models_path must contain at least one checkpoint.")
         self.corruption_methods = validate_corruption_methods(self.corruption_methods)

@@ -118,3 +118,59 @@ Example evaluation command:
 python3 main.py --config experiments/eval.json --dry-run
 torchrun --nproc_per_node=2 main.py --config experiments/eval.json
 ```
+
+## Reconstruction evaluation metrics
+
+Evaluation now adds `bleu4`, `rouge_l_f1`, `top5_accuracy_denoising`, and
+`mauve` to each model/corruption/rate result. Install project dependencies
+with `pip install -e .` before evaluation. All four scores use a 0–1 scale.
+
+BLEU is corpus BLEU-4 (SacreBLEU 13a tokenizer, exponential smoothing,
+no effective-order fallback); its signature is saved with results.
+ROUGE-L is mean per-text F1 (English rouge-score tokenizer, no stemming).
+Both compare final full reconstructions against the same truncated clean
+sequences. Padding is excluded via attention masks; generated special tokens
+remain visible. At low corruption rates, unchanged context contributes to
+these scores.
+
+Top-5 counts only originally corrupted, non-padding positions, exactly once
+when committed. It uses the logits from that commitment step and two running
+counters, without storing logits or a trajectory. Existing argmax decoding and
+accuracy metrics are preserved.
+
+MAUVE is computed on the complete gathered corpus on rank 0, never averaged
+across batches or workers. Test shards do not duplicate examples. Options:
+
+- `metrics`: list of metrics to compute; defaults to all seven supported metrics.
+  Use `["bleu4", "rouge_l_f1"]` to compute only these missing scores.
+  Enum names: `loss`, `accuracy`, `denoising_accuracy`, `bleu_4`,
+  `rouge_l`, `top_5_accuracy`, `mauve`. Earlier result-key names are accepted
+  as config aliases. JSON result keys stay unchanged for compatibility.
+  Disabled metric dependencies are not imported; disabled metric fields are omitted.
+- `mauve_model`: defaults to `gpt2-large` (downloaded on first use).
+- `mauve_device_id`: defaults to `-1` (CPU); use `0` for GPU 0.
+- `mauve_max_text_length`: defaults to `256` evaluator tokens.
+
+MAUVE uses the evaluation seed, or 25 when none is supplied. Keep evaluator,
+length, seed, and corpus size fixed between comparisons. A few thousand texts
+per corpus are recommended by MAUVE's authors. Corpora with fewer than two texts or any empty text
+produce a null score with status metadata when computation is undefined;
+missing dependencies or evaluator download failures raise an error.
+
+Example lightweight run:
+
+```bash
+python main.py --config experiments_config/eval/eval_2.json --set 'metrics=["bleu4","rouge_l_f1"]' --set output_file=missing_text_metrics.json
+```
+
+Use a separate `output_file` for incremental metric runs to preserve previous results.
+Evaluation regenerates reconstructions; existing aggregate JSON files do not contain
+the texts or commitment logits needed to calculate these new metrics retroactively.
+Set the same seed and configuration to reproduce the corruption benchmark.
+
+Metric implementations live in separate classes under `metrics/` and extend
+`BaseMetric`. `metrics/factory.py` maps each member of your `METRICS` enum
+(in `metrics/metirc_enum.py`) to its implementation. Config strings are parsed
+into enum members; only selected metric classes are instantiated. Adding a
+metric requires an enum member, a class, and its factory mapping. Token metrics
+accumulate sufficient statistics; corpus metrics score the gathered final texts.

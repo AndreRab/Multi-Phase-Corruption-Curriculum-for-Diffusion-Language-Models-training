@@ -1,6 +1,7 @@
 from enum import Enum
 
 class METRICS(Enum):
+    LOSS = "loss"
     ACCURACY = "accuracy"
     DENOISING_ACCURACY = "denoising_accuracy"
     BLEU_4 = "bleu_4"
