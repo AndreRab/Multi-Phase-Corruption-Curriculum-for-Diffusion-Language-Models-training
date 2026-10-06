@@ -1,7 +1,7 @@
 import argparse
 import json
 from pathlib import Path
-from experiment import (
+from experiments import (
     load_eval_config_values,
     parse_eval_set_override,
     print_eval_config,

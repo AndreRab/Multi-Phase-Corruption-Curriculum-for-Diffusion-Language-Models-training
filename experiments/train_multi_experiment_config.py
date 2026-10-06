@@ -7,7 +7,7 @@ from corruption_utils.factory import (
     CORRUPTION_METHOD_ORDER,
     validate_corruption_methods,
 )
-from experiment.reproducibility import validate_seed
+from experiments.reproducibility import validate_seed
 
 @dataclass
 class TrainMultiExperimentConfig:

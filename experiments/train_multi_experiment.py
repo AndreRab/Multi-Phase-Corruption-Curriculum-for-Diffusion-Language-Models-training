@@ -3,7 +3,7 @@ import os
 from dataclasses import asdict
 from pathlib import Path
 
-from experiment.train_multi_experiment_config import TrainMultiExperimentConfig
+from experiments.train_multi_experiment_config import TrainMultiExperimentConfig
 
 
 def _setup_distributed(torch):
@@ -54,7 +54,7 @@ def run_experiment(config: TrainMultiExperimentConfig) -> None:
     )
     from model_wrappers import GPT2DiffusionTransformer
     from train_utils import DiffusionDataCollator, TrainingOutput, train
-    from experiment.reproducibility import seed_everything
+    from experiments.reproducibility import seed_everything
 
     distributed, rank, local_rank, device = _setup_distributed(torch)
     seed_everything(config.seed)

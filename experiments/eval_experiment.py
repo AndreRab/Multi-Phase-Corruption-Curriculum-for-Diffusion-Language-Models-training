@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from tqdm import tqdm
 
-from experiment.eval_experiment_config import EvalExperimentConfig
+from experiments.eval_experiment_config import EvalExperimentConfig
 
 
 def _setup_distributed(torch):
@@ -141,7 +141,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
 
     from model_wrappers import GPT2DiffusionTransformer
     from train_utils import DiffusionDataCollator
-    from experiment.reproducibility import seed_everything
+    from experiments.reproducibility import seed_everything
 
     distributed, rank, device = _setup_distributed(torch)
     seed_everything(config.seed)
