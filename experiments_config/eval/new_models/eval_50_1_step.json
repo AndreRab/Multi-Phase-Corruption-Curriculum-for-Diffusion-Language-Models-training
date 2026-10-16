@@ -1,0 +1,24 @@
+{
+  "mode": "eval",
+  "model_name": "openai-community/gpt2",
+  "models_path": [
+    "results/models/mix_30m_30s_40r_4_steps.pt",
+    "results/models/mix_30r_30m_40s_4_steps.pt",
+    "results/models/mix_30r_30m_40s.pt",
+    "results/models/mix_30r_30m_40s.pt"
+  ],
+  "dataset_name": "cimec/lambada",
+  "dataset_split": "test",
+  "corruption_methods": ["similar", "mask", "random"],
+  "corruption_rates": [0.25, 0.50, 0.75, 0.90, 0.95],
+  "corruption_minimum_probability": 0.01,
+  "similar_number_of_neighbors": 20,
+  "result_folder": "/net/people/plgrid/plgarebowski/Multi-Phase-Corruption-Curriculum-for-Diffusion-Language-Models-training/results/eval/new_models",
+  "output_file": "evaluation_results_50_1_step.json",
+  "num_diffusion_steps": 100,
+  "denoise_iterations": 50,
+  "max_length": 64,
+  "batch_size": 32,
+  "metrics": ["loss", "accuracy", "denoising_accuracy", "bleu_4", "rouge_l", "top_5_accuracy"],
+  "seed": 42
+}
