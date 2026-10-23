@@ -2,9 +2,7 @@
   "mode": "eval",
   "model_name": "openai-community/gpt2",
   "models_path": [
-    "results/models/mix_30m_30s_40r_4_steps.pt",
-    "results/models/mix_30r_30m_40s_4_steps.pt",
-    "results/models/mix_30r_30m_40s.pt",
+    "results/models/mix_30m_30s_40r.pt",
     "results/models/mix_30r_30m_40s.pt"
   ],
   "dataset_name": "cimec/lambada",
