@@ -1,0 +1,30 @@
+{
+  "model_name": "openai-community/gpt2",
+  "dataset_path": "Salesforce/wikitext",
+  "dataset_name": "wikitext-2-raw-v1",
+  "iterations_intervals": [
+    100,
+    0,
+    0
+  ],
+  "learning_rate": 1e-05,
+  "result_folder": "results/new/seed_123/one_step",
+  "model_id": "similar_100",
+  "train_output_id": "similar_100",
+  "num_diffusion_steps": 100,
+  "corruption_methods": [
+    "similar",
+    "mask",
+    "random"
+  ],
+  "corruption_minimum_probability": 0.01,
+  "corruption_maximum_probability": 0.95,
+  "similar_number_of_neighbors": 20,
+  "max_length": 64,
+  "batch_size": 32,
+  "mode": "train_multi",
+  "seed": 123,
+  "train_diffusion_steps": 1,
+  "model_save_path": "results/new/seed_123/one_step/models",
+  "training_output_save_path": "results/new/seed_123/one_step/training_output"
+}
