@@ -26,6 +26,6 @@
   "batch_size": 32,
   "train_diffusion_steps": 4,
   "rollout_loss_decay": 0.5,
-  "model_save_path": "results/new/seed_123/four_steps/models",
+  "model_save_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models",
   "training_output_save_path": "results/new/seed_123/four_steps/training_output"
 }

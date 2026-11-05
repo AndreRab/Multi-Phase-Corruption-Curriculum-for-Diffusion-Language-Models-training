@@ -26,6 +26,6 @@
   "similar_number_of_neighbors": 20,
   "max_length": 64,
   "batch_size": 32,
-  "model_save_path": "results/new/seed_123/four_steps/models",
+  "model_save_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models",
   "training_output_save_path": "results/new/seed_123/four_steps/training_output"
 }

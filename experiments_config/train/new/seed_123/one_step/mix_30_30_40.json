@@ -25,6 +25,6 @@
   "mode": "train_multi",
   "seed": 123,
   "train_diffusion_steps": 1,
-  "model_save_path": "results/new/seed_123/one_step/models",
+  "model_save_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/one_step/models",
   "training_output_save_path": "results/new/seed_123/one_step/training_output"
 }
