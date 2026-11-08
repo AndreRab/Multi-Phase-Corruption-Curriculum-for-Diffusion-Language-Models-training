@@ -1,7 +1,7 @@
 #!/bin/bash
-# Usage: bash submit_new_training.sh
+# Usage: bash scripts/submit_new_training.sh
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 project_dir="$PWD"
 
 mkdir -p logs
@@ -19,4 +19,4 @@ fi
 echo "Submitting $count configs; Slurm determines how many run simultaneously."
 echo "Config list: $TRAIN_CONFIG_LIST"
 sbatch --chdir="$project_dir" --export=ALL \
-    --array="0-$((count - 1))" "$project_dir/train_new.slurm"
+    --array="0-$((count - 1))" "$project_dir/scripts/train_new.slurm"

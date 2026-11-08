@@ -141,10 +141,10 @@ accuracy metrics are preserved.
 MAUVE is computed on the complete gathered corpus on rank 0, never averaged
 across batches or workers. Test shards do not duplicate examples. Options:
 
-- `metrics`: list of metrics to compute; defaults to all seven supported metrics.
+- `metrics`: list of metrics to compute; defaults to all supported metrics.
   Use `["bleu4", "rouge_l_f1"]` to compute only these missing scores.
   Enum names: `loss`, `accuracy`, `denoising_accuracy`, `bleu_4`,
-  `rouge_l`, `top_5_accuracy`, `mauve`. Earlier result-key names are accepted
+  `rouge_l`, `top_5_accuracy`, `mauve`, `masked_perplexity`. Earlier result-key names are accepted
   as config aliases. JSON result keys stay unchanged for compatibility.
   Disabled metric dependencies are not imported; disabled metric fields are omitted.
 - `mauve_model`: defaults to `gpt2-large` (downloaded on first use).
@@ -174,3 +174,60 @@ Metric implementations live in separate classes under `metrics/` and extend
 into enum members; only selected metric classes are instantiated. Adding a
 metric requires an enum member, a class, and its factory mapping. Token metrics
 accumulate sufficient statistics; corpus metrics score the gathered final texts.
+
+### Masked-token perplexity and new seeded checkpoints
+
+`masked_perplexity` is `exp(sum(masked token NLL) / num_masked_positions)`
+from the initial, one-step forward pass at the configured corruption level.
+Only positions selected for corruption whose input ID equals the tokenizer's
+mask token ID are scored; padding is excluded. NLL sums and token counts are
+summed across batches and distributed workers before exponentiation.
+`num_masked_positions` reports the denominator. If there are no masked tokens,
+the score is `null`. This is conditional denoising perplexity, not autoregressive
+sequence perplexity; compare scores at the same corruption rate and dataset.
+It does not depend on the number of iterative denoising steps.
+
+48 configs under `experiments_config/eval/new/seed_{42,123,2026}/` cover all
+39 new training checkpoints at `/net/tscratch/people/plgarebowski/results/new/`.
+Each seed has `denoising_<K>/` for K = 1, 2, 4, 8, 16, 32, 64, 100.
+Each K contains `one_step_training.json` (7 models trained with one step) and
+`four_step_training.json` (6 models trained with four steps).
+`denoise_iterations` is K in both configs; corruption rates remain unchanged.
+They retain loss, accuracy,
+denoising accuracy, BLEU-4, ROUGE-L and top-5 accuracy, and add masked perplexity.
+Evaluation results go to
+`results/eval/new/seed_<seed>/denoising_<K>/<training phase>/evaluation_results.json`.
+The same seed and checkpoint order are used across K to reproduce the same
+corrupted inputs. Initial-pass masked perplexity should therefore stay the same
+across K; iterative reconstruction metrics can change.
+Missing checkpoints raise an error before model loading instead of silently
+evaluating a newly initialized model.
+
+Example on an allocated GPU:
+
+```bash
+python main.py --config experiments_config/eval/new/seed_42/denoising_8/one_step_training.json
+```
+
+To submit all 48 configs as a Slurm array, using the same four-GPU torchrun
+setup as training:
+
+```bash
+bash scripts/submit_new_eval.sh
+```
+
+The submitter snapshots a sorted config list into `logs/eval_configs.*` for each
+submission. `scripts/eval_new.slurm` selects one config per array task and logs
+its seed, denoising iteration count, and training variant. Logs are written to
+`logs/%x_%A_%a.out` and `.err`. Slurm determines concurrency.
+
+The default time limit is four hours. You can override it when submitting, e.g.:
+
+```bash
+bash scripts/submit_new_eval.sh --time=12:00:00
+```
+
+For perplexity alone, pass `--set 'metrics=["masked_perplexity"]'`; this skips
+iterative denoising and text metrics. Keep the same seed to regenerate the same
+corruptions. Checkpoints must be copied back to these scratch paths if they were
+removed after uploading to Hugging Face.

@@ -1,0 +1,44 @@
+{
+  "mode": "eval",
+  "model_name": "openai-community/gpt2",
+  "seed": 42,
+  "models_path": [
+    "/net/tscratch/people/plgarebowski/results/new/seed_42/four_steps/models/mask_100_4_steps.pt",
+    "/net/tscratch/people/plgarebowski/results/new/seed_42/four_steps/models/mix_30_30_40_4_steps.pt",
+    "/net/tscratch/people/plgarebowski/results/new/seed_42/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+    "/net/tscratch/people/plgarebowski/results/new/seed_42/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+    "/net/tscratch/people/plgarebowski/results/new/seed_42/four_steps/models/random_100_4_steps.pt",
+    "/net/tscratch/people/plgarebowski/results/new/seed_42/four_steps/models/similar_100_4_steps.pt"
+  ],
+  "dataset_name": "cimec/lambada",
+  "dataset_split": "test",
+  "corruption_methods": [
+    "similar",
+    "mask",
+    "random"
+  ],
+  "corruption_rates": [
+    0.25,
+    0.5,
+    0.75,
+    0.9,
+    0.95
+  ],
+  "corruption_minimum_probability": 0.01,
+  "similar_number_of_neighbors": 20,
+  "result_folder": "results/eval/new/seed_42/denoising_4/four_step_training",
+  "output_file": "evaluation_results.json",
+  "num_diffusion_steps": 100,
+  "denoise_iterations": 4,
+  "max_length": 64,
+  "batch_size": 32,
+  "metrics": [
+    "loss",
+    "accuracy",
+    "masked_perplexity",
+    "denoising_accuracy",
+    "bleu_4",
+    "rouge_l",
+    "top_5_accuracy"
+  ]
+}
