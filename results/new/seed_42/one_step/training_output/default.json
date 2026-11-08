@@ -1,0 +1,21 @@
+{
+    "train_loss": [],
+    "test_loss": [],
+    "train_acc": [],
+    "test_acc": [],
+    "iterations_intervals": [
+        0,
+        0,
+        0
+    ],
+    "corruption_methods": [
+        "similar",
+        "mask",
+        "random"
+    ],
+    "seed": 42,
+    "train_step_loss": [],
+    "test_step_loss": [],
+    "train_step_acc": [],
+    "test_step_acc": []
+}
