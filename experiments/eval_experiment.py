@@ -54,18 +54,13 @@ def _build_corruption(name, rate, model, tokenizer, config):
     )
 
 
-def _evaluate_models(models, batches, device, metrics=("loss", "accuracy"), mask_token_id=None):
+def _evaluate_models(models, batches, device, metrics=("loss", "accuracy")):
     import torch
 
     metric_instances = [{metric.result_key: metric for metric in build_metrics(metrics)} for _ in models]
     total_loss = [0.0 for _ in models]
     total_correct = [0.0 for _ in models]
     total_positions = [0 for _ in models]
-    masked_nll = [0.0 for _ in models]
-    masked_positions = [0 for _ in models]
-    if "masked_perplexity" in metric_keys(metrics) and mask_token_id is None:
-        raise ValueError("masked_perplexity requires mask_token_id.")
-
     for model in models:
         model.eval()
 
@@ -86,8 +81,8 @@ def _evaluate_models(models, batches, device, metrics=("loss", "accuracy"), mask
                 if position_count == 0:
                     continue
 
-                if "loss" in metric_instances[model_idx]:
-                    metric = metric_instances[model_idx]["loss"]
+                metric = metric_instances[model_idx].get("loss") or metric_instances[model_idx].get("perplexity")
+                if metric is not None:
                     metric.update(logits[positions], batch["clean_ids"][positions])
                     total_loss[model_idx] = metric.total
                 if "accuracy" in metric_instances[model_idx]:
@@ -95,14 +90,9 @@ def _evaluate_models(models, batches, device, metrics=("loss", "accuracy"), mask
                     metric.update(logits[positions].argmax(dim=-1), batch["clean_ids"][positions])
                     total_correct[model_idx] = metric.total
                 total_positions[model_idx] += position_count
-                if "masked_perplexity" in metric_instances[model_idx]:
-                    masked = positions & (batch["corrupted_ids"] == mask_token_id)
-                    metric = metric_instances[model_idx]["masked_perplexity"]
-                    metric.update(logits[masked], batch["clean_ids"][masked])
-                    masked_nll[model_idx] = metric.total
-                    masked_positions[model_idx] = metric.count
 
-    return total_loss, total_correct, total_positions, masked_nll, masked_positions
+    return total_loss, total_correct, total_positions
+
 
 def _evaluate_models_denoising(models, batches, device, num_iterations, tokenizer, metrics=None):
     import torch
@@ -226,11 +216,10 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
         # Reuse the same corrupted batches for one-step and iterative evaluation.
         batches = list(loader)
         loss_sum, correct, positions = ([0] * len(models) for _ in range(3))
-        masked_nll, masked_positions = ([0] * len(models) for _ in range(2))
-        one_step_keys = {"loss", "accuracy", "masked_perplexity"}
+        one_step_keys = {"loss", "accuracy", "perplexity"}
         if metric_keys(config.metrics) & one_step_keys:
-            loss_sum, correct, positions, masked_nll, masked_positions = _evaluate_models(
-                models, batches, device, config.metrics, mask_token_id=tokenizer.mask_token_id,
+            loss_sum, correct, positions = _evaluate_models(
+                models, batches, device, config.metrics,
             )
         correct_denoising, denoising_positions, top5_hits, top5_positions = ([0] * len(models) for _ in range(4))
         predictions, references = ([[] for _ in models] for _ in range(2))
@@ -240,7 +229,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
             )
         if distributed:
             one_step_values = torch.tensor(
-                [loss_sum, correct, positions, masked_nll, masked_positions],
+                [loss_sum, correct, positions],
                 dtype=torch.float64,
                 device=device,
             )
@@ -251,7 +240,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
             )
             dist.all_reduce(one_step_values, op=dist.ReduceOp.SUM)
             dist.all_reduce(denoising_values, op=dist.ReduceOp.SUM)
-            loss_sum, correct, positions, masked_nll, masked_positions = one_step_values.tolist()
+            loss_sum, correct, positions = one_step_values.tolist()
             correct_denoising, denoising_positions, top5_hits, top5_positions = denoising_values.tolist()
             gathered = [None] * dist.get_world_size() if rank == 0 else None
             dist.gather_object((predictions, references), gathered, dst=0)
@@ -297,15 +286,13 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
             }
             statistics = {
                 "loss": (loss_one, positions_one),
-                "masked_perplexity": (masked_nll[model_idx], masked_positions[model_idx]),
+                "perplexity": (loss_one, positions_one),
                 "accuracy": (correct_one, positions_one),
                 "accuracy_denoising": (correct_denoising_one, positions_denoising_one),
                 "top5_accuracy_denoising": (top5_hits[model_idx], top5_positions[model_idx]),
             }
             for metric in scalar_metrics:
                 row[metric.result_key] = metric.compute(*statistics[metric.result_key])
-            if "masked_perplexity" in metric_keys(config.metrics):
-                row["num_masked_positions"] = int(masked_positions[model_idx])
             for name in {"loss", "accuracy", "accuracy_denoising", "top5_accuracy_denoising"} - metric_keys(config.metrics):
                 row.pop(name, None)
             if "top5_accuracy_denoising" not in config.metrics:

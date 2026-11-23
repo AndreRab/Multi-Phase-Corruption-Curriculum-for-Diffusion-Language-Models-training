@@ -8,7 +8,7 @@ mkdir -p logs
 # Pending array jobs must keep the config list from their own submission.
 EVAL_CONFIG_LIST="$(mktemp "$project_dir/logs/eval_configs.XXXXXX")"
 export EVAL_CONFIG_LIST
-find "$project_dir/experiments_config/eval/new" -type f -name '*.json' | LC_ALL=C sort > "$EVAL_CONFIG_LIST"
+find "$project_dir/experiments_config/eval/${EVAL_SUITE:-new}" -type f -name '*.json' | LC_ALL=C sort > "$EVAL_CONFIG_LIST"
 count=$(wc -l < "$EVAL_CONFIG_LIST")
 if (( count == 0 )); then
     echo "No evaluation configs found." >&2

@@ -24,7 +24,7 @@ test -f "$config"
 phase="$(basename "$config" .json)"
 denoising="$(basename "$(dirname "$config")")"
 seed="$(basename "$(dirname "$(dirname "$config")")")"
-task_name="eval_${seed}_${denoising}_${phase}"
+task_name="${EVAL_JOB_PREFIX:-eval}_${seed}_${denoising}_${phase}"
 scontrol update JobId="${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}" JobName="$task_name"
 
 export HF_HOME="/net/tscratch/people/$USER/huggingface"

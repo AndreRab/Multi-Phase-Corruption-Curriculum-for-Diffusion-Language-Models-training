@@ -4,14 +4,14 @@ from metrics.loss_metric import LossMetric
 from metrics.metirc_enum import METRICS
 
 
-class MaskedPerplexityMetric(LossMetric):
-    """exp(token-weighted NLL) on masked input positions, before denoising."""
+class PerplexityMetric(LossMetric):
+    """exp(token-weighted NLL) on all corrupted input positions, before denoising."""
 
-    result_key = "masked_perplexity"
+    result_key = "perplexity"
 
     def __init__(self, config=None):
         super().__init__(config)
-        self.name = METRICS.MASKED_PERPLEXITY
+        self.name = METRICS.PERPLEXITY
 
     def compute(self, predictions=None, references=None):
         mean_nll = super().compute(predictions, references)
