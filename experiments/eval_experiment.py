@@ -101,11 +101,14 @@ def _evaluate_models_denoising(models, batches, device, num_iterations, tokenize
     total_positions = [0 for _ in models]
     top5_hits = [0 for _ in models]
     top5_positions = [0 for _ in models]
+    denoising_nll = [0.0 for _ in models]
     predictions = [[] for _ in models]
     references = [[] for _ in models]
     from metrics.text_metrics import decode_valid_text
     selected = metric_keys(metrics) if metrics is not None else {"accuracy_denoising", "top5_accuracy_denoising", "bleu4", "rouge_l_f1"}
     metric_instances = [{metric.result_key: metric for metric in build_metrics(selected)} for _ in models]
+    collect_perplexity = "perplexity_denoising" in selected
+    collect_top5 = "top5_accuracy_denoising" in selected
     collect_text = bool(selected & {"bleu4", "rouge_l_f1", "mauve"})
 
     for model in models:
@@ -119,17 +122,23 @@ def _evaluate_models_denoising(models, batches, device, num_iterations, tokenize
 
             for model_idx, model in enumerate(models):
                 def on_commit(batch_idx, selected_positions, logits):
-                    metric = metric_instances[model_idx]["top5_accuracy_denoising"]
-                    metric.update(logits, batch["clean_ids"][batch_idx, selected_positions])
-                    top5_hits[model_idx] = metric.total
-                    top5_positions[model_idx] = metric.count
+                    targets = batch["clean_ids"][batch_idx, selected_positions]
+                    if collect_top5:
+                        metric = metric_instances[model_idx]["top5_accuracy_denoising"]
+                        metric.update(logits, targets)
+                        top5_hits[model_idx] = metric.total
+                        top5_positions[model_idx] = metric.count
+                    if collect_perplexity:
+                        metric = metric_instances[model_idx]["perplexity_denoising"]
+                        metric.update(logits, targets)
+                        denoising_nll[model_idx] = metric.total
 
                 reconstructed_ids = model.denoise(
                     corrupted_ids=batch["corrupted_ids"],
                     attention_mask=batch["attention_mask"],
                     corrupted_positions=batch["corrupted_positions"],
                     num_iterations=num_iterations,
-                    on_commit=on_commit if "top5_accuracy_denoising" in selected else None,
+                    on_commit=on_commit if collect_top5 or collect_perplexity else None,
                 )
                 if collect_text:
                     predictions[model_idx].extend(decode_valid_text(tokenizer, reconstructed_ids, batch["attention_mask"]))
@@ -148,7 +157,7 @@ def _evaluate_models_denoising(models, batches, device, num_iterations, tokenize
                     total_correct[model_idx] = metric.total
                 total_positions[model_idx] += position_count
 
-    return total_correct, total_positions, top5_hits, top5_positions, predictions, references
+    return total_correct, total_positions, top5_hits, top5_positions, denoising_nll, predictions, references
 
 def run_eval_experiment(config: EvalExperimentConfig) -> None:
     missing = [path for path in config.models_path if not Path(path).is_file()]
@@ -221,10 +230,10 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
             loss_sum, correct, positions = _evaluate_models(
                 models, batches, device, config.metrics,
             )
-        correct_denoising, denoising_positions, top5_hits, top5_positions = ([0] * len(models) for _ in range(4))
+        correct_denoising, denoising_positions, top5_hits, top5_positions, denoising_nll = ([0] * len(models) for _ in range(5))
         predictions, references = ([[] for _ in models] for _ in range(2))
         if metric_keys(config.metrics) - one_step_keys:
-            correct_denoising, denoising_positions, top5_hits, top5_positions, predictions, references = _evaluate_models_denoising(
+            correct_denoising, denoising_positions, top5_hits, top5_positions, denoising_nll, predictions, references = _evaluate_models_denoising(
                 models, batches, device, config.denoise_iterations, tokenizer, config.metrics,
             )
         if distributed:
@@ -234,14 +243,14 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
                 device=device,
             )
             denoising_values = torch.tensor(
-                [correct_denoising, denoising_positions, top5_hits, top5_positions],
+                [correct_denoising, denoising_positions, top5_hits, top5_positions, denoising_nll],
                 dtype=torch.float64,
                 device=device,
             )
             dist.all_reduce(one_step_values, op=dist.ReduceOp.SUM)
             dist.all_reduce(denoising_values, op=dist.ReduceOp.SUM)
             loss_sum, correct, positions = one_step_values.tolist()
-            correct_denoising, denoising_positions, top5_hits, top5_positions = denoising_values.tolist()
+            correct_denoising, denoising_positions, top5_hits, top5_positions, denoising_nll = denoising_values.tolist()
             gathered = [None] * dist.get_world_size() if rank == 0 else None
             dist.gather_object((predictions, references), gathered, dst=0)
             if rank == 0:
@@ -287,6 +296,7 @@ def run_eval_experiment(config: EvalExperimentConfig) -> None:
             statistics = {
                 "loss": (loss_one, positions_one),
                 "perplexity": (loss_one, positions_one),
+                "perplexity_denoising": (denoising_nll[model_idx], positions_denoising_one),
                 "accuracy": (correct_one, positions_one),
                 "accuracy_denoising": (correct_denoising_one, positions_denoising_one),
                 "top5_accuracy_denoising": (top5_hits[model_idx], top5_positions[model_idx]),

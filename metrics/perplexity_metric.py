@@ -21,3 +21,14 @@ class PerplexityMetric(LossMetric):
             return math.exp(mean_nll)
         except OverflowError:
             return float("inf")
+
+
+class DenoisingPerplexityMetric(PerplexityMetric):
+    """Token-weighted perplexity from the logits at each token's commitment."""
+
+    result_key = "perplexity_denoising"
+    stage = "denoising"
+
+    def __init__(self, config=None):
+        super().__init__(config)
+        self.name = METRICS.DENOISING_PERPLEXITY

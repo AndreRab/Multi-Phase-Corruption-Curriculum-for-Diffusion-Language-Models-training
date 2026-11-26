@@ -2,7 +2,7 @@ from metrics.metirc_enum import METRICS
 from metrics.accuracy_metric import AccuracyMetric
 from metrics.denoising_accuracy_metric import DenoisingAccuracyMetric
 from metrics.loss_metric import LossMetric
-from metrics.perplexity_metric import PerplexityMetric
+from metrics.perplexity_metric import DenoisingPerplexityMetric, PerplexityMetric
 from metrics.top5_accuracy_metric import Top5AccuracyMetric
 from metrics.bleu4_metric import Bleu4Metric
 from metrics.rouge_l_metric import RougeLMetric
@@ -11,6 +11,7 @@ from metrics.mauve_metric import MauveMetric
 METRIC_CLASSES = {
     METRICS.LOSS: LossMetric,
     METRICS.PERPLEXITY: PerplexityMetric,
+    METRICS.DENOISING_PERPLEXITY: DenoisingPerplexityMetric,
     METRICS.ACCURACY: AccuracyMetric,
     METRICS.DENOISING_ACCURACY: DenoisingAccuracyMetric,
     METRICS.TOP_5_ACCURACY: Top5AccuracyMetric,

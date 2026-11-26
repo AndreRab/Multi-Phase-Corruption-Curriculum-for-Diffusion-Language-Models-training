@@ -3,6 +3,7 @@ from enum import Enum
 class METRICS(Enum):
     LOSS = "loss"
     PERPLEXITY = "perplexity"
+    DENOISING_PERPLEXITY = "denoising_perplexity"
     ACCURACY = "accuracy"
     DENOISING_ACCURACY = "denoising_accuracy"
     BLEU_4 = "bleu_4"
