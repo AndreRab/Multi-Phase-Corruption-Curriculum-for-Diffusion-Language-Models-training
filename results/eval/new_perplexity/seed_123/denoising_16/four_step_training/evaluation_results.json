@@ -1,0 +1,1352 @@
+[
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82062,
+        "perplexity": 8887.335168410358,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82062,
+        "perplexity": 5524.2434498492385,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82062,
+        "perplexity": 4897.026527490482,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82062,
+        "perplexity": 1211.3489001573626,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82062,
+        "perplexity": 7109.838661429296,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82062,
+        "perplexity": 150.79413622874802,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 165750,
+        "perplexity": 9065.46183729155,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 165750,
+        "perplexity": 5882.843977104827,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 165750,
+        "perplexity": 5121.5342985498455,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 165750,
+        "perplexity": 1292.4891477752897,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 165750,
+        "perplexity": 7245.731914216475,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 165750,
+        "perplexity": 156.8986940536736,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 246696,
+        "perplexity": 8983.46124273694,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 246696,
+        "perplexity": 6096.911988873769,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 246696,
+        "perplexity": 5191.9833873953785,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 246696,
+        "perplexity": 1337.3423626097238,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 246696,
+        "perplexity": 7190.554251503179,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 246696,
+        "perplexity": 160.72513732466777,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296798,
+        "perplexity": 8988.3503333268,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296798,
+        "perplexity": 6308.869833802221,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296798,
+        "perplexity": 5277.469491269844,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296798,
+        "perplexity": 1381.197728133037,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296798,
+        "perplexity": 7194.606520434923,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296798,
+        "perplexity": 164.16379982844813,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313055,
+        "perplexity": 8924.998790701791,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313055,
+        "perplexity": 6340.750807470009,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313055,
+        "perplexity": 5272.278778442094,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313055,
+        "perplexity": 1382.514679077109,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313055,
+        "perplexity": 7150.769697115974,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "similar",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313055,
+        "perplexity": 165.24271057267362,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 81989,
+        "perplexity": 8749.096812986392,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 81989,
+        "perplexity": 5531.8372524359775,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 81989,
+        "perplexity": 5517.839786438586,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 81989,
+        "perplexity": 281621.119287324,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 81989,
+        "perplexity": 7031.295501506559,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 81989,
+        "perplexity": 106228.42157494684,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164847,
+        "perplexity": 9104.943507580647,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164847,
+        "perplexity": 5842.7627966376185,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164847,
+        "perplexity": 5966.016857621564,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164847,
+        "perplexity": 333381.24717753584,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164847,
+        "perplexity": 7292.700251434923,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164847,
+        "perplexity": 186726.2808270761,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 247338,
+        "perplexity": 9027.899557602868,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 247338,
+        "perplexity": 6120.994724102556,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 247338,
+        "perplexity": 6266.670710959139,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 247338,
+        "perplexity": 618731.0910065841,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 247338,
+        "perplexity": 7219.98154346208,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 247338,
+        "perplexity": 501573.07849076745,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296168,
+        "perplexity": 9074.605702552239,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296168,
+        "perplexity": 6750.158786222911,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296168,
+        "perplexity": 6732.501766974834,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296168,
+        "perplexity": 1730362.4602483811,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296168,
+        "perplexity": 7247.6439191932195,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296168,
+        "perplexity": 1575525.7157145047,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 312792,
+        "perplexity": 9062.23203785807,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 312792,
+        "perplexity": 7129.4200129960645,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 312792,
+        "perplexity": 7049.018267966286,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 312792,
+        "perplexity": 2835439.5710517885,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 312792,
+        "perplexity": 7238.68107102924,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "mask",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 312792,
+        "perplexity": 3100938.3697308055,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82087,
+        "perplexity": 8884.395522482606,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82087,
+        "perplexity": 6113.750957854879,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82087,
+        "perplexity": 5749.645130207531,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82087,
+        "perplexity": 121085.5258937888,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82087,
+        "perplexity": 7128.538556511975,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.25,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 82087,
+        "perplexity": 2519071.6666380404,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164575,
+        "perplexity": 9050.0883481991,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164575,
+        "perplexity": 6629.425988878982,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164575,
+        "perplexity": 6249.594471906352,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164575,
+        "perplexity": 150679.60992359222,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164575,
+        "perplexity": 7263.839341078695,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.5,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 164575,
+        "perplexity": 6615175.413538966,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 248165,
+        "perplexity": 9148.146531269913,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 248165,
+        "perplexity": 7183.004017775038,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 248165,
+        "perplexity": 6828.449644915443,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 248165,
+        "perplexity": 164255.61102088093,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 248165,
+        "perplexity": 7330.866386987325,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.75,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 248165,
+        "perplexity": 10055699.070920043,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296386,
+        "perplexity": 9019.914505939749,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296386,
+        "perplexity": 7540.649819255794,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296386,
+        "perplexity": 7187.009171439494,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296386,
+        "perplexity": 170920.209489601,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296386,
+        "perplexity": 7238.882846440047,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.9,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 296386,
+        "perplexity": 9909921.738889715,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mask_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mask_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313092,
+        "perplexity": 9029.168995399848,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30_30_40_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30_30_40_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313092,
+        "perplexity": 7791.891029471921,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30m_30s_40r_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30m_30s_40r_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313092,
+        "perplexity": 7413.951801209241,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "mix_30r_30m_40s_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/mix_30r_30m_40s_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313092,
+        "perplexity": 177274.5573623892,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "random_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/random_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313092,
+        "perplexity": 7248.771262831032,
+        "metrics": [
+            "perplexity"
+        ]
+    },
+    {
+        "model": "similar_100_4_steps",
+        "model_path": "/net/tscratch/people/plgarebowski/results/new/seed_123/four_steps/models/similar_100_4_steps.pt",
+        "dataset": "cimec/lambada",
+        "split": "test",
+        "corruption_method": "random",
+        "corruption_rate": 0.95,
+        "seed": 123,
+        "initial_timestep": 99,
+        "num_positions": 313092,
+        "perplexity": 9396731.73379005,
+        "metrics": [
+            "perplexity"
+        ]
+    }
+]
