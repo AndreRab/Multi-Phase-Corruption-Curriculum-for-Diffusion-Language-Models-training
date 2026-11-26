@@ -27,7 +27,7 @@
   ],
   "corruption_minimum_probability": 0.01,
   "similar_number_of_neighbors": 20,
-  "result_folder": "results/eval/new_perplexity/seed_123/denoising_100/one_step_training",
+  "result_folder": "results/eval/new/perplexity/seed_123/denoising_100/one_step_training",
   "output_file": "evaluation_results.json",
   "num_diffusion_steps": 100,
   "denoise_iterations": 100,
